@@ -60,8 +60,7 @@ request:
 {
     "merchantId": "가맹점",
     "merchantMemberId": "가맹점 회원",
-    "paymentKey": "거래 번호",
-    "amount": "취소 금액"
+    "paymentKey": "거래 번호"
 }
 
 response:
@@ -87,13 +86,11 @@ response:
 {
     "payments": [
         {
-        "paymentKey": "거래 번호",
         "amount": 10000,
         "status": "completed",
         "approvalDate": "승인 시간"
         },
         {
-        "paymentKey": "거래 번호",
         "amount": 5000,
         "status": "cancel",
         "approvalDate": "승인 시간"
