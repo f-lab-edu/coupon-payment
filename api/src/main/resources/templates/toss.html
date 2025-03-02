@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>결제하기</title>
+    <!-- 토스페이먼츠 결제창 SDK 추가 -->
+    <script src="https://js.tosspayments.com/v1/payment"></script>
+</head>
+<body>
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            const clientKey = /*[[${clientKey}]]*/ '';
+            const successUrl = /*[[${successUrl}]]*/ '';
+            const failUrl = /*[[${failUrl}]]*/ '';
+            const customerKey = /*[[${customerKey}]]*/ '';
+
+            var tossPayments = TossPayments(clientKey);
+            // 결제 인증 요청
+            console.log("TossPayments Request Data:", {
+                customerKey: customerKey,
+                successUrl: successUrl,
+                failUrl: failUrl
+            });
+
+
+            tossPayments.requestBillingAuth("카드", {
+                customerKey: customerKey,
+                successUrl: successUrl,
+                failUrl: failUrl
+        });
+    });
+
+    </script>
+</body>
+</html>
