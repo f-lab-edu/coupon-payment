@@ -22,7 +22,8 @@ public class TossBillingRes {
     private CardInfo card;
     private String cardCompany;
     private String cardNumber;
-
+    private String code;
+    private String message;
     @Getter
     @Setter
     @NoArgsConstructor

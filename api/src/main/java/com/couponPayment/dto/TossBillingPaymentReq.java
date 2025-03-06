@@ -1,16 +1,13 @@
 package com.couponPayment.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Setter
 @Getter
+@Builder
 public class TossBillingPaymentReq {
     private String customerKey;
     private int amount;

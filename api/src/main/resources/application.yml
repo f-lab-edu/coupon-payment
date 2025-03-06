@@ -2,6 +2,10 @@ server:
   port: 8081
 
 spring:
+  config:
+    import:
+      - optional:file:./api/.env[.properties]   # 로컬에서 API 모듈 안의 .env 파일 읽기
+      - optional:file:.env[.properties]         # 테스트에서 클래스패스 내의 .env 파일 읽기
   datasource:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver
@@ -20,12 +24,9 @@ logging:
     root: INFO # 기본 레벨 (root 레벨)
     org.springframework.web: DEBUG # Spring Web 패키지 디버그 레벨
 
-jasypt:
-  encryptor:
-    bean: jasyptEncryptor
-    password: ${ENCRYPT_KEY}
-
 toss:
-  clientKey: ENC(E08iHWGLWbHBYjLumRAzEnfJYbMYtSxFosCNW7KQKIa7fOEa07pri039ZBLI7R99)
-  secretKey: ENC(5XfXWVOnO2gplto9LnAW0PgKzJ73lmP19sLzszzxbirhZ1JnIjhxKIPXtmeLfh7i)
-  securityKey: ENC(hMC3WEM13vDQlnNNqPDnRVT20k8shu+VM3ozN8dC2Xad7QsHIHTI0OSiAh3c58hs3twjULnKoGiWzdc97s2jgMlLWzhpnu/R8F63ZEIodhg=)
+  clientKey: ${CLIENT_KEY}
+  secretKey: ${SECRET_KEY}
+  securityKey: ${SECURITY_KEY}
+  billingKey_url: "https://api.tosspayments.com/v1/billing/authorizations/issue"
+  payment_url: "https://api.tosspayments.com/v1/billing/"

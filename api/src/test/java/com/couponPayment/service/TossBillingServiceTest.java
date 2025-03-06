@@ -2,6 +2,7 @@ package com.couponPayment.service;
 
 import com.couponPayment.dto.TossBillingReq;
 import com.couponPayment.dto.TossBillingRes;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,8 @@ class TossBillingServiceTest {
     public void getBillingKey(){
         //http://localhost:8081/api/v1/toss/billing/success?customerKey=xFl5CrMdIL&authKey=bln_p6XnzaNmdEB
         //sucess요청이 올때마다 값이 달라지는데 어떻게 테스트 코드를 짜야할까?....
+
+        System.out.println(secretTossKey);
         TossBillingReq tossBillingReq = TossBillingReq
                 .builder()
                 .customerKey("Y5zNpssBs1")
