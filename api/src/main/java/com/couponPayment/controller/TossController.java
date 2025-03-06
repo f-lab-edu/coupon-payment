@@ -33,7 +33,7 @@ public class TossController {
     @GetMapping("/success")
     public String success(@RequestParam String customerKey,
                           @RequestParam String authKey){
-        //http://localhost:8081/api/v1/toss/billing/success?customerKey=xFl5CrMdIL&authKey=bln_p6XnzaNmdEB
+        //http://localhost:8081/api/v1/toss/billing/success?customerKey=OKKO9HaFYw&authKey=bln_WgpvWP4ZNXe
         logger.info("Received customerKey: {}, authKey: {}", customerKey, authKey);
         //service 빌링키 요청
         return "index";
