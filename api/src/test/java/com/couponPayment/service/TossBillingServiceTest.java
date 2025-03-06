@@ -15,8 +15,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Base64;
 
-@SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TossBillingServiceTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -30,8 +29,8 @@ class TossBillingServiceTest {
         //sucess요청이 올때마다 값이 달라지는데 어떻게 테스트 코드를 짜야할까?....
         TossBillingReq tossBillingReq = TossBillingReq
                 .builder()
-                .customerKey("QAMIaejd7b")
-                .authKey("bln_Kb0AZRzZM06")
+                .customerKey("Y5zNpssBs1")
+                .authKey("bln_5KnkWkREXW1")
                 .build();
 
         // Authorization에 사용될 시크릿 키
@@ -54,5 +53,8 @@ class TossBillingServiceTest {
                 );
 
         System.out.println(tossBillingRes.getBody());
+        //TossBillingRes(mId=null, customerKey=Y5zNpssBs1, authenticatedAt=2025-03-06T16:58:17+09:00, method=카드, billingKey=Hy_l357saUspeqnf2eoePY84C6p9dUGR7-q1hT8EZDo=,
+        // card=TossBillingRes.CardInfo(issuerCode=91, acquirerCode=91, number=94411702****274*, cardType=체크, ownerType=개인),
+        // cardCompany=농협, cardNumber=94411702****274*)
     }
 }

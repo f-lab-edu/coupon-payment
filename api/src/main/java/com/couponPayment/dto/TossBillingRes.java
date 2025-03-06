@@ -28,6 +28,7 @@ public class TossBillingRes {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    @ToString
     public static class CardInfo {
         private String issuerCode;
         private String acquirerCode;
