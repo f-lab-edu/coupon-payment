@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -13,11 +14,12 @@ import java.util.List;
 
 @Entity
 @Getter
+@AllArgsConstructor
 public class WalletReqTb extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "walletReqId")
-    private Long walletReqId;
+    private Long id;
 
     @OneToMany(mappedBy = "walletReqTb")
     private List<TransactionInfoTb> transactionInfoTb = new ArrayList<>();
@@ -40,4 +42,7 @@ public class WalletReqTb extends BaseEntity{
     @Column(name = "amount")
     private String amount;
 
+    protected WalletReqTb() {
+
+    }
 }

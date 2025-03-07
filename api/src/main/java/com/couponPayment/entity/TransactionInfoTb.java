@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class TransactionInfoTb extends BaseEntity{
@@ -56,4 +55,8 @@ public class TransactionInfoTb extends BaseEntity{
 
     @Column(length = 128)
     private String callbackUrl;
+
+    protected TransactionInfoTb() {
+
+    }
 }
