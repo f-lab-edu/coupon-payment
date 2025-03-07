@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class MyWalletInfoTb extends BaseEntity{
@@ -43,4 +42,5 @@ public class MyWalletInfoTb extends BaseEntity{
 
     @OneToMany(mappedBy = "myWalletInfoTb")
     private List<TransactionInfoTb> transactionInfoTb = new ArrayList<>();
+    protected MyWalletInfoTb() {}
 }

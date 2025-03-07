@@ -1,7 +1,7 @@
 package com.couponPayment.entity;
 
 import jakarta.persistence.Entity;
-import lombok.Getter;
+import lombok.*;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -9,10 +9,12 @@ import java.util.List;
 
 @Entity
 @Getter
+@AllArgsConstructor
 public class UserInfoTb extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userInfoId;
+    @Column(name = "userInfoId")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "storeInfoId")
@@ -36,6 +38,5 @@ public class UserInfoTb extends BaseEntity{
 
     @OneToMany(mappedBy = "userInfoTb")
     private List<MyWalletInfoTb> myWalletInfoTbs = new ArrayList<>();
-
-
+    protected UserInfoTb() {}
 }
