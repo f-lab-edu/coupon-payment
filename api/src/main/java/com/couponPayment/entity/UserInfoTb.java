@@ -14,6 +14,10 @@ public class UserInfoTb extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userInfoId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "storeInfoId")
+    private StoreInfoTb storeInfoTb;
+
     @Column(name = "name")
     private String name;
 
@@ -33,6 +37,5 @@ public class UserInfoTb extends BaseEntity{
     @OneToMany(mappedBy = "userInfoTb")
     private List<MyWalletInfoTb> myWalletInfoTbs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userInfoTb")
-    private List<StoreInfoTb> storeInfoTbs = new ArrayList<>();
+
 }

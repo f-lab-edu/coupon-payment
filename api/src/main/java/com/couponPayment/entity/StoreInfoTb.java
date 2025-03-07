@@ -8,7 +8,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,8 +30,6 @@ public class StoreInfoTb extends BaseEntity{
     /** tossPayment ID*/
     private String tossPaymentId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userInfoId")
-    private UserInfoTb userInfoTb;
-
+    @OneToMany(mappedBy = "storeInfoTb")
+    private List<UserInfoTb> userInfoTbs = new ArrayList<>();
 }
