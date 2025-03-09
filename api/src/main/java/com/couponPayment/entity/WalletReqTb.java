@@ -40,7 +40,7 @@ public class WalletReqTb extends BaseEntity{
 
     /** 가격 */
     @Column(name = "amount")
-    private String amount;
+    private Integer amount;
 
     protected WalletReqTb() {
 

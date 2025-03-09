@@ -31,6 +31,14 @@ public class TransactionInfoTb extends BaseEntity{
     @JoinColumn(name = "walletReqId")
     private WalletReqTb walletReqTb;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "storeInfoId")
+    private StoreInfoTb storeInfoTb;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userInfoId")
+    private UserInfoTb userInfoTb;
+
     @Column(length = 128)
     private String cardId;
 
