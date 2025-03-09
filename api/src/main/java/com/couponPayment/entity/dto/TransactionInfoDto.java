@@ -16,21 +16,24 @@ import java.sql.Timestamp;
 @Builder
 public class TransactionInfoDto {
 
-    private String cardId;
-    private String orderNum;
-    private String orderId;
+    //private String cardId;
+    //private String orderNum;
+   // private String orderId;
+    //private Integer amount;
     private String tranNum;
 
-    private Timestamp requestDt;
-    private Integer amount;
+    private String requestDt;
+
     private Integer approvalAmount;
-    private Timestamp approvalDt;
+    private String approvalDt;
     private String approvalNum;
     private Integer cancelAmount;
-    private Timestamp cancelDt;
+    private String cancelDt;
     private Integer installment;
     private String callbackUrl;
 
     private Long myWalletInfoId;
+    private Long userInfoId;
+    private Long storeInfoId;
     private Long walletReqId;
 }

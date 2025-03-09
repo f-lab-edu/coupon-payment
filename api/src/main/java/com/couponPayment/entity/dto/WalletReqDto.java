@@ -17,5 +17,5 @@ public class WalletReqDto {
     private String merchantMemberId;
     private String orderId;
     private String orderNum;
-    private String amount;
+    private int amount;
 }

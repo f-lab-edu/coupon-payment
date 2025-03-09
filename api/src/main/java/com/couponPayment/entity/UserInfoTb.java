@@ -38,5 +38,8 @@ public class UserInfoTb extends BaseEntity{
 
     @OneToMany(mappedBy = "userInfoTb")
     private List<MyWalletInfoTb> myWalletInfoTbs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userInfoTb")
+    private List<TransactionInfoTb> transactionInfoTbs = new ArrayList<>();
     protected UserInfoTb() {}
 }

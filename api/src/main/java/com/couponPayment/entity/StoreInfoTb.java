@@ -34,7 +34,8 @@ public class StoreInfoTb extends BaseEntity{
 
     @OneToMany(mappedBy = "storeInfoTb")
     private List<UserInfoTb> userInfoTbs = new ArrayList<>();
-
+    @OneToMany(mappedBy = "storeInfoTb")
+    private List<TransactionInfoTb> transactionInfoTbs = new ArrayList<>();
     protected StoreInfoTb() {
 
     }
