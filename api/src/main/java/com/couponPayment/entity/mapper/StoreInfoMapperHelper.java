@@ -13,6 +13,9 @@ public class StoreInfoMapperHelper {
 
     @Named("mapStoreInfo")
     public StoreInfoTb mapStoreInfo(Long storeInfoId){
+        if(storeInfoId == null){
+            return null;
+        }
         return storeInfoRepository.findById(storeInfoId).orElse(null);
     }
 }

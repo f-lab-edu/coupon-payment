@@ -13,6 +13,9 @@ public class WalletReqMapperHelper {
 
     @Named("mapWalletReq")
     public WalletReqTb mapWalletReq(Long walletReqId){
+        if(walletReqId == null){
+            return null;
+        }
         return walletReqRepository.findById(walletReqId).orElse(null);
     }
 }
