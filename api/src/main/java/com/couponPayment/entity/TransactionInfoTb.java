@@ -52,6 +52,7 @@ public class TransactionInfoTb extends BaseEntity{
 
     private Timestamp requestDt;
     //private Integer amount;
+
     private Integer approvalAmount;
     private Timestamp approvalDt;
 
@@ -59,6 +60,7 @@ public class TransactionInfoTb extends BaseEntity{
     private String approvalNum;
     private Integer cancelAmount;
     private Timestamp cancelDt;
+    /** 할부 */
     private Integer installment;
 
     @Column(length = 128)

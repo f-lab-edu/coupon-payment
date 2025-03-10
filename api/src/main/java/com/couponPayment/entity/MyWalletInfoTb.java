@@ -32,12 +32,21 @@ public class MyWalletInfoTb extends BaseEntity{
     @Column(length = 64)
     private String cardId;
 
+    @Column(length = 32)
     private String cardCompany;
+    @Column(length = 32)
     private String cardNumber;
+    /** 카드 발급사 */
+    @Column(length = 4)
     private String issuerCode;
+    @Column(length = 4)
+    /** 카드 발급사 */
     private String acquirerCode;
+    @Column(length = 32)
     private String number;
+    @Column(length = 32)
     private String cardType;
+    @Column(length = 32)
     private String ownerType;
 
     @OneToMany(mappedBy = "myWalletInfoTb")
