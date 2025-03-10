@@ -25,21 +25,16 @@ public class WalletReqTb extends BaseEntity{
     private List<TransactionInfoTb> transactionInfoTb = new ArrayList<>();
 
     /** 매장 아이디 */
-    @Column(name = "merchantId")
     private String merchantId;
 
     /** 매장 멤버 아이디 */
-    @Column(name = "merchantMemberId")
     private String merchantMemberId;
 
-    @Column(name = "orderId")
     private String orderId;
     /** 주문번호 */
-    @Column(name = "orderNum")
     private String orderNum;
 
     /** 가격 */
-    @Column(name = "amount")
     private Integer amount;
 
     protected WalletReqTb() {

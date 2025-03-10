@@ -26,10 +26,11 @@ public class StoreInfoTb extends BaseEntity{
     private Long id;
 
     /** 가맹점 아이디 */
-    @Column(name = "merchantId")
+    @Column(length = 32)
     private String merchantId;
 
     /** tossPayment ID*/
+    @Column(length = 32)
     private String tossPaymentId;
 
     @OneToMany(mappedBy = "storeInfoTb")

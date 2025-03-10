@@ -20,15 +20,14 @@ public class UserInfoTb extends BaseEntity{
     @JoinColumn(name = "storeInfoId")
     private StoreInfoTb storeInfoTb;
 
-    @Column(name = "name")
+    @Column(length = 32)
     private String name;
 
     /** 전화번호 */
-    @Column(name = "phone")
+    @Column(length = 32)
     private String phone;
 
     /** 메일주소 */
-    @Column(name = "mail")
     private String mail;
 
     /** 사용 유무 (0 : 정상, 1 : 탈퇴) */
