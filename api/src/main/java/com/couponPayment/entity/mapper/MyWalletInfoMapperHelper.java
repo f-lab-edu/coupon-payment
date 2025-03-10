@@ -13,6 +13,10 @@ public class MyWalletInfoMapperHelper {
 
     @Named("mapMyWalletInfo")
     public MyWalletInfoTb mapMyWalletInfo(Long myWalletInfoId){
+        if(myWalletInfoId == null){
+            return null;
+        }
+
         return myWalletInfoRepository.findById(myWalletInfoId).orElse(null);
     }
 }

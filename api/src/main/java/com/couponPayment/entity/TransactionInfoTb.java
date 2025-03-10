@@ -39,19 +39,19 @@ public class TransactionInfoTb extends BaseEntity{
     @JoinColumn(name = "userInfoId")
     private UserInfoTb userInfoTb;
 
-    @Column(length = 128)
+    /*@Column(length = 128)
     private String cardId;
 
     @Column(length = 64)
     private String orderNum;
 
     @Column(length = 64)
-    private String orderId;
+    private String orderId;*/
     @Column(length = 64)
     private String tranNum;
 
     private Timestamp requestDt;
-    private Integer amount;
+    //private Integer amount;
     private Integer approvalAmount;
     private Timestamp approvalDt;
 

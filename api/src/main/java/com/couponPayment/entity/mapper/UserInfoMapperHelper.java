@@ -14,6 +14,10 @@ public class UserInfoMapperHelper {
 
     @Named("mapUserInfo")
     public UserInfoTb mapUserInfo(Long userInfoId){
+        if (userInfoId == null) {
+            return null;  // JPA 예외 발생 방지
+        }
+
         return userInfoRepository.findById(userInfoId).orElse(null);
     }
 }
