@@ -1,8 +1,12 @@
 package com.couponPayment.service;
 
+import com.couponPayment.dto.TossBillingPaymentCancelReq;
+import com.couponPayment.dto.TossBillingPaymentCancelRes;
+import com.couponPayment.dto.TossBillingPaymentReq;
+import com.couponPayment.dto.TossBillingPaymentRes;
 import com.couponPayment.dto.TossBillingReq;
 import com.couponPayment.dto.TossBillingRes;
-import io.github.cdimascio.dotenv.Dotenv;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +27,10 @@ class TossBillingServiceTest {
 
     @Value("${toss.secretKey}")
     private String secretTossKey;
+    @Value("${toss.payment_url}")
+    private String payment_url;
+    @Value("${toss.payment_cancel_url}")
+    private String payment_cancel_url;
 
     @Test
     public void getBillingKey(){
@@ -59,5 +67,75 @@ class TossBillingServiceTest {
         //TossBillingRes(mId=null, customerKey=Y5zNpssBs1, authenticatedAt=2025-03-06T16:58:17+09:00, method=카드, billingKey=Hy_l357saUspeqnf2eoePY84C6p9dUGR7-q1hT8EZDo=,
         // card=TossBillingRes.CardInfo(issuerCode=91, acquirerCode=91, number=94411702****274*, cardType=체크, ownerType=개인),
         // cardCompany=농협, cardNumber=94411702****274*)
+    }
+
+
+    @Test
+    public void payment(){
+        String customerKey = "Y5zNpssBs1";
+        String billingKey = "Hy_l357saUspeqnf2eoePY84C6p9dUGR7-q1hT8EZDo=";
+        TossBillingPaymentReq tossBillingPaymentReq = TossBillingPaymentReq
+                .builder()
+                .customerKey(customerKey)
+                .amount(1000)
+                .orderId("orderId10")
+                .orderName("orderName")
+                .build();
+        //
+        String url = payment_url+billingKey;
+
+        // Authorization에 사용될 시크릿 키
+        String secretKey = secretTossKey;
+
+        // Basic 인증 헤더 생성 (secretKey: 뒤에 :을 붙여서 base64로 인코딩)
+        String authHeader = "Basic " + Base64.getEncoder().encodeToString((secretKey + ":").getBytes());
+        System.out.println(authHeader);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", authHeader);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        // HttpEntity를 통해 요청 본문과 헤더를 설정
+        HttpEntity<TossBillingPaymentReq> entity = new HttpEntity<>(tossBillingPaymentReq, headers);
+
+        ResponseEntity<TossBillingPaymentRes> tossBillingPaymentResResponse =
+                testRestTemplate.exchange(url,
+                        HttpMethod.POST,
+                        entity,
+                        TossBillingPaymentRes.class
+                );
+        System.out.println(tossBillingPaymentResResponse.getBody());
+    }
+
+    @Test
+    public void paymentCancel(){
+
+        TossBillingPaymentCancelReq tossBillingPaymentCancelReq = TossBillingPaymentCancelReq
+                .builder()
+                .paymentKey("tviva20250311153221DLaG0")
+                .cancelReason("취소 이유")
+                .build();
+        //
+        String url = payment_cancel_url.replace("{paymentKey}", tossBillingPaymentCancelReq.getPaymentKey());
+
+        // Authorization에 사용될 시크릿 키
+        String secretKey = secretTossKey;
+
+        // Basic 인증 헤더 생성 (secretKey: 뒤에 :을 붙여서 base64로 인코딩)
+        String authHeader = "Basic " + Base64.getEncoder().encodeToString((secretKey + ":").getBytes());
+        System.out.println(authHeader);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", authHeader);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        // HttpEntity를 통해 요청 본문과 헤더를 설정
+        HttpEntity<TossBillingPaymentCancelReq> entity = new HttpEntity<>(tossBillingPaymentCancelReq, headers);
+
+        ResponseEntity<TossBillingPaymentCancelRes> tossBillingPaymentCancelRes =
+                testRestTemplate.exchange(url,
+                        HttpMethod.POST,
+                        entity,
+                        TossBillingPaymentCancelRes.class
+                );
+
+        System.out.println(tossBillingPaymentCancelRes.getBody());
+
     }
 }

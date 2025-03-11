@@ -1,5 +1,7 @@
 package com.couponPayment.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +15,10 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
+@JsonIgnoreProperties(ignoreUnknown = true) // 알 수 없는 필드는 무시
 public class TossBillingPaymentRes {
+    //Jackson Lombok의 Getter 네이밍 컨벤션에 의하여 붙여야함 ex) getMId()의 경우 첫2글자가 대문자라 다 소문자로 치환 됨
+    @JsonProperty("mId")
     private String mId;
     private String lastTransactionKey;
     private String paymentKey;
