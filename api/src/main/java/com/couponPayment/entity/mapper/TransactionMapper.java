@@ -14,28 +14,27 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-@Mapper(componentModel = "spring", uses = {UserInfoMapperHelper.class, StoreInfoMapperHelper.class,
-        MyWalletInfoMapperHelper.class, WalletReqMapperHelper.class})
+@Mapper(componentModel = "spring")
 public interface TransactionMapper {
-    @Mapping(source = "requestDt", target = "requestDt", qualifiedByName = "stringToTimestamp")
+    /*@Mapping(source = "requestDt", target = "requestDt", qualifiedByName = "stringToTimestamp")
     @Mapping(source = "approvalDt", target = "approvalDt", qualifiedByName = "stringToTimestamp")
-    @Mapping(source = "cancelDt", target = "cancelDt", qualifiedByName = "stringToTimestamp")
-    @Mapping(source="userInfoId", target = "userInfoTb", qualifiedByName = "mapUserInfo")
-    @Mapping(source="storeInfoId", target = "storeInfoTb", qualifiedByName = "mapStoreInfo")
-    @Mapping(source="myWalletInfoId", target = "myWalletInfoTb", qualifiedByName = "mapMyWalletInfo")
-    @Mapping(source="walletReqId", target = "walletReqTb", qualifiedByName = "mapWalletReq")
+    @Mapping(source = "cancelDt", target = "cancelDt", qualifiedByName = "stringToTimestamp")*/
+    @Mapping(source="userInfoId", target = "userInfoTb.id")
+    @Mapping(source="storeInfoId", target = "storeInfoTb.id")
+    @Mapping(source="myWalletInfoId", target = "myWalletInfoTb.id")
+    @Mapping(source="walletReqId", target = "walletReqTb.id")
     TransactionInfoTb toEntity(TransactionInfoDto transactionInfoDto);
 
-    @Mapping(source = "requestDt", target = "requestDt", qualifiedByName = "timestampToString")
+    /*@Mapping(source = "requestDt", target = "requestDt", qualifiedByName = "timestampToString")
     @Mapping(source = "approvalDt", target = "approvalDt", qualifiedByName = "timestampToString")
-    @Mapping(source = "cancelDt", target = "cancelDt", qualifiedByName = "timestampToString")
+    @Mapping(source = "cancelDt", target = "cancelDt", qualifiedByName = "timestampToString")*/
     @Mapping(source="myWalletInfoTb.id", target = "myWalletInfoId")
     @Mapping(source="walletReqTb.id", target = "walletReqId")
     @Mapping(source="storeInfoTb.id", target = "storeInfoId")
     @Mapping(source="userInfoTb.id", target = "userInfoId")
     TransactionInfoDto toDto(TransactionInfoTb transactionInfoTb);
 
-    @Named("stringToTimestamp")
+    /*@Named("stringToTimestamp")
     default Timestamp stringToTimestamp(String dateString) {
         if (dateString == null || dateString.isEmpty()) {
             return null;
@@ -60,5 +59,5 @@ public interface TransactionMapper {
         LocalDateTime localDateTime = timestamp.toLocalDateTime();
         // LocalDateTime을 문자열로 변환 (ISO 8601 형식에서 T를 제거)
         return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    }
+    }*/
 }

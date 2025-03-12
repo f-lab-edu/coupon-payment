@@ -13,10 +13,10 @@ import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-@Mapper(componentModel = "spring", uses = { StoreInfoMapperHelper.class })
+@Mapper(componentModel = "spring")
 public interface UserInfoMapper {
 
-    @Mapping(source="storeInfoId", target = "storeInfoTb", qualifiedByName = "mapStoreInfo")
+    @Mapping(source="storeInfoId", target = "storeInfoTb.id")
     UserInfoTb toEntity(UserInfoDto userInfoDto);
     @Mapping(source="storeInfoTb.id", target = "storeInfoId")
     UserInfoDto toDto(UserInfoTb userInfoTb);
