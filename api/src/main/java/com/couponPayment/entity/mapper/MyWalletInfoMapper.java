@@ -5,9 +5,9 @@ import com.couponPayment.entity.dto.MyWalletInfoDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {UserInfoMapperHelper.class})
+@Mapper(componentModel = "spring")
 public interface MyWalletInfoMapper{
-    @Mapping(source="userInfoId", target = "userInfoTb", qualifiedByName = "mapUserInfo")
+    @Mapping(source="userInfoId", target = "userInfoTb.id")
     MyWalletInfoTb toEntity(MyWalletInfoDto myWalletInfoDto);
 
     @Mapping(source = "userInfoTb.id", target = "userInfoId")

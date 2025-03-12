@@ -50,16 +50,16 @@ public class TransactionInfoTb extends BaseEntity{
     @Column(length = 64)
     private String tranNum;
 
-    private Timestamp requestDt;
+    private String requestDt;
     //private Integer amount;
 
     private Integer approvalAmount;
-    private Timestamp approvalDt;
+    private String approvalDt;
 
     @Column(length = 64)
     private String approvalNum;
     private Integer cancelAmount;
-    private Timestamp cancelDt;
+    private String cancelDt;
     /** 할부 */
     private Integer installment;
 

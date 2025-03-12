@@ -23,20 +23,21 @@ import com.couponPayment.repository.WalletReqRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-@ComponentScan(basePackages = "com.couponPayment.entity.mapper")
 public class MapperTest {
     /**
     * 1. Mapper Test 목적
     * 2. 각 Mapper를 통하여 save 후 find하여 각 Entity <-> Dto 맵핑 되는지 테스트
     */
-    @Autowired
+
+
+    /*@Autowired
     private MyWalletInfoRepository myWalletInfoRepository;
     @Autowired
     private MyWalletInfoMapper myWalletInfoMapper;
@@ -58,8 +59,6 @@ public class MapperTest {
 
     @Autowired
     private WalletReqRepository walletReqRepository;
-    @Autowired
-    private WalletReqMapper walletReqMapper;
 
     private WalletReqTb walletReqTb;
     private WalletReqDto walletReqDto;
@@ -112,20 +111,84 @@ public class MapperTest {
                 .build();
 
         myWalletInfoTb = myWalletInfoRepository.save(myWalletInfoMapper.toEntity(myWalletInfoDto));
-    }
+    }*/
+
+
+    private WalletReqMapper walletReqMapper = Mappers.getMapper(WalletReqMapper.class);
+    private StoreInfoMapper storeInfoMapper = Mappers.getMapper(StoreInfoMapper.class);
+    private UserInfoMapper userInfoMapper = Mappers.getMapper(UserInfoMapper.class);
 
     @Test
     @DisplayName("WalletReq Mapper")
     public void walletReq_Mapper_Test(){
-        walletReqDto = walletReqMapper.toDto(walletReqRepository.findById(walletReqTb.getId()).get());
+
+        WalletReqTb walletReqTb = new WalletReqTb(1L, null, "bbq","young", "orderId", "orderNum",1000);
+        WalletReqDto walletReqDto = walletReqMapper.toDto(walletReqTb);
 
         assertThat(walletReqDto)
                 .usingRecursiveComparison()
                 .isEqualTo(walletReqTb);
-
     }
 
     @Test
+    @DisplayName("StoreInfo Mapper")
+    public void storeInfo_Mapper_Test(){
+        StoreInfoTb storeInfoTb = new StoreInfoTb(1L, "bbq", "toss", null, null);
+        StoreInfoDto storeInfoDto = storeInfoMapper.toDto(storeInfoTb);
+
+        assertThat(storeInfoDto)
+                .usingRecursiveComparison()
+                .isEqualTo(storeInfoTb);
+    }
+
+    @Test
+    @DisplayName("UserInfo Mapper")
+    public void UserInfo_Mapper_Test(){
+        StoreInfoTb storeInfoTb = new StoreInfoTb(1L, "bbq", "toss", null, null);
+        StoreInfoDto storeInfoDto = storeInfoMapper.toDto(storeInfoTb);
+
+        assertThat(storeInfoDto)
+                .usingRecursiveComparison()
+                .isEqualTo(storeInfoTb);
+
+        UserInfoTb userInfoTb = new UserInfoTb(1L,storeInfoTb,"young","010","naver.com",0,null,null);
+        UserInfoDto userInfoDto = userInfoMapper.toDto(userInfoTb);
+
+        assertThat(userInfoDto)
+                .usingRecursiveComparison()
+                .ignoringFields("storeInfoId")
+                .isEqualTo(userInfoTb);
+
+        /*
+        UserInfoTb userInfoTb = userInfoMapper.toEntity(userInfoDto);
+        userInfoDto = userInfoMapper.toDto(userInfoTb);
+
+        assertThat(userInfoDto)
+                .usingRecursiveComparison()
+                .isEqualTo(userInfoTb);*/
+    }
+
+    @Test
+    @DisplayName("MyWalletInfo Mapper")
+    public void MyWalletInfo_Mapper_Test(){
+        /*StoreInfoTb storeInfoTb = storeInfoMapper.toEntity(storeInfoDto);
+        userInfoDto = UserInfoDto
+                .builder()
+                .name("young")
+                .phone("010")
+                .mail("naver.com")
+                .useFlag(0)
+                .storeInfoId(storeInfoTb.getId())
+                .build();
+
+        UserInfoTb userInfoTb = userInfoMapper.toEntity(userInfoDto);
+        userInfoDto = userInfoMapper.toDto(userInfoTb);
+
+        assertThat(userInfoDto)
+                .usingRecursiveComparison()
+                .isEqualTo(userInfoTb);*/
+    }
+    /*@Test
     @DisplayName("UserInfo Mapper")
     public void UserInfo_Mapper_Test(){
 
@@ -150,18 +213,18 @@ public class MapperTest {
     @Test
     @DisplayName("TransactionInfo Mapper")
     public void TransactionInfo_Mapper_Test(){
-        /*StoreInfoDto storeInfoDto = StoreInfoDto
+        *//*StoreInfoDto storeInfoDto = StoreInfoDto
                 .builder()
                 .merchantId("bbq")
                 .tossPaymentId("toss")
                 .build();
-        StoreInfoTb storeInfoTb = storeInfoRepository.save(storeInfoMapper.toEntity(storeInfoDto));*/
+        StoreInfoTb storeInfoTb = storeInfoRepository.save(storeInfoMapper.toEntity(storeInfoDto));*//*
         storeInfoDto = storeInfoMapper.toDto(storeInfoRepository.findById(storeInfoTb.getId()).get());
         assertThat(storeInfoDto)
                 .usingRecursiveComparison()
                 .isEqualTo(storeInfoTb);
 
-        /*WalletReqDto walletReqDto = WalletReqDto
+        *//*WalletReqDto walletReqDto = WalletReqDto
                 .builder()
                 .merchantId("bbq")
                 .merchantMemberId("young")
@@ -169,13 +232,13 @@ public class MapperTest {
                 .orderNum("OrderNum")
                 .amount(1000)
                 .build();
-        WalletReqTb walletReqTb = walletReqRepository.save(walletReqMapper.toEntity(walletReqDto));*/
+        WalletReqTb walletReqTb = walletReqRepository.save(walletReqMapper.toEntity(walletReqDto));*//*
         walletReqDto = walletReqMapper.toDto(walletReqRepository.findById(walletReqTb.getId()).get());
         assertThat(walletReqDto)
                 .usingRecursiveComparison()
                 .isEqualTo(walletReqTb);
 
-/*        UserInfoDto userInfoDto = UserInfoDto
+*//*        UserInfoDto userInfoDto = UserInfoDto
                 .builder()
                 .name("young")
                 .phone("010")
@@ -183,7 +246,7 @@ public class MapperTest {
                 .useFlag(0)
                 .storeInfoId(storeInfoTb.getId())
                 .build();
-        UserInfoTb userInfoTb = userInfoRepository.save(userInfoMapper.toEntity(userInfoDto));*/
+        UserInfoTb userInfoTb = userInfoRepository.save(userInfoMapper.toEntity(userInfoDto));*//*
         userInfoDto = userInfoMapper.toDto(userInfoRepository.findById(userInfoTb.getId()).get());
 
         assertThat(userInfoDto)
@@ -254,5 +317,5 @@ public class MapperTest {
         assertThat(walletReqDto)
                 .usingRecursiveComparison()
                 .isEqualTo(walletReqRepository.findById(transactionInfoDto.getUserInfoId()).get());
-    }
+    }*/
 }

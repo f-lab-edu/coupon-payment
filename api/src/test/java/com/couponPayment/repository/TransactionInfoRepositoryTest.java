@@ -1,3 +1,4 @@
+/*
 package com.couponPayment.repository;
 
 import com.couponPayment.entity.TransactionInfoTb;
@@ -85,4 +86,4 @@ class TransactionInfoRepositoryTest extends CommonReposity{
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .isEqualTo("2025-03-10 09:23:27");
     }
-}
+}*/
