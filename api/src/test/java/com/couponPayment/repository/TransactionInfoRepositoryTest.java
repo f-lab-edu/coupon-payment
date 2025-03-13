@@ -25,8 +25,8 @@ class TransactionInfoRepositoryTest {
     }
 
     @Test
-    public void save(){
-        TransactionInfo transactionInfo =new TransactionInfo(
+    public void save() {
+        TransactionInfo transactionInfo = new TransactionInfo(
                 null,  // ID (자동 생성)
                 null,
                 null,
@@ -53,9 +53,10 @@ class TransactionInfoRepositoryTest {
         assertThat(transactionInfo.getCallbackUrl()).isEqualTo("https://www.naver.com");
 
     }
+
     @Test
-    public void findById(){
-        TransactionInfo transactionInfo =new TransactionInfo(
+    public void findById() {
+        TransactionInfo transactionInfo = new TransactionInfo(
                 null,  // ID (자동 생성)
                 null,
                 null,
