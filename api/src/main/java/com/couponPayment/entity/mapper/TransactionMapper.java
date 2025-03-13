@@ -1,38 +1,29 @@
 package com.couponPayment.entity.mapper;
 
-import com.couponPayment.entity.TransactionInfoTb;
+import com.couponPayment.entity.TransactionInfo;
 import com.couponPayment.entity.dto.TransactionInfoDto;
-import jdk.jfr.Name;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 
 @Mapper(componentModel = "spring")
 public interface TransactionMapper {
     /*@Mapping(source = "requestDt", target = "requestDt", qualifiedByName = "stringToTimestamp")
     @Mapping(source = "approvalDt", target = "approvalDt", qualifiedByName = "stringToTimestamp")
     @Mapping(source = "cancelDt", target = "cancelDt", qualifiedByName = "stringToTimestamp")*/
-    @Mapping(source="userInfoId", target = "userInfoTb.id")
-    @Mapping(source="storeInfoId", target = "storeInfoTb.id")
-    @Mapping(source="myWalletInfoId", target = "myWalletInfoTb.id")
-    @Mapping(source="walletReqId", target = "walletReqTb.id")
-    TransactionInfoTb toEntity(TransactionInfoDto transactionInfoDto);
+    @Mapping(source="userInfoId", target = "userInfo.id")
+    @Mapping(source="storeInfoId", target = "storeInfo.id")
+    @Mapping(source="myWalletInfoId", target = "myWalletInfo.id")
+    @Mapping(source="walletReqId", target = "walletReq.id")
+    TransactionInfo toEntity(TransactionInfoDto transactionInfoDto);
 
     /*@Mapping(source = "requestDt", target = "requestDt", qualifiedByName = "timestampToString")
     @Mapping(source = "approvalDt", target = "approvalDt", qualifiedByName = "timestampToString")
     @Mapping(source = "cancelDt", target = "cancelDt", qualifiedByName = "timestampToString")*/
-    @Mapping(source="myWalletInfoTb.id", target = "myWalletInfoId")
-    @Mapping(source="walletReqTb.id", target = "walletReqId")
-    @Mapping(source="storeInfoTb.id", target = "storeInfoId")
-    @Mapping(source="userInfoTb.id", target = "userInfoId")
-    TransactionInfoDto toDto(TransactionInfoTb transactionInfoTb);
+    @Mapping(source= "myWalletInfo.id", target = "myWalletInfoId")
+    @Mapping(source= "walletReq.id", target = "walletReqId")
+    @Mapping(source= "storeInfo.id", target = "storeInfoId")
+    @Mapping(source= "userInfo.id", target = "userInfoId")
+    TransactionInfoDto toDto(TransactionInfo transactionInfo);
 
     /*@Named("stringToTimestamp")
     default Timestamp stringToTimestamp(String dateString) {

@@ -10,14 +10,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.sql.Timestamp;
 
 @Getter
 @AllArgsConstructor
 @Entity
-public class TransactionInfoTb extends BaseEntity{
+public class TransactionInfo extends BaseEntity{
     @Id
     @Column(name = "transactionInfoId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,19 +22,19 @@ public class TransactionInfoTb extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "myWalletInfoId")
-    private MyWalletInfoTb myWalletInfoTb;
+    private MyWalletInfo myWalletInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "walletReqId")
-    private WalletReqTb walletReqTb;
+    private WalletReq walletReq;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "storeInfoId")
-    private StoreInfoTb storeInfoTb;
+    private StoreInfo storeInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userInfoId")
-    private UserInfoTb userInfoTb;
+    private UserInfo userInfo;
 
     /*@Column(length = 128)
     private String cardId;
@@ -66,7 +63,7 @@ public class TransactionInfoTb extends BaseEntity{
     @Column(length = 128)
     private String callbackUrl;
 
-    protected TransactionInfoTb() {
+    protected TransactionInfo() {
 
     }
 }

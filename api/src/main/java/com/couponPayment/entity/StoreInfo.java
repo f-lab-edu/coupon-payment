@@ -15,29 +15,26 @@ import java.util.List;
 @Entity
 @Getter
 @AllArgsConstructor
-public class WalletReqTb extends BaseEntity{
+public class StoreInfo extends BaseEntity{
+    /**매장정보 아이디 */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "walletReqId")
+    @Column(name = "storeInfoId")
     private Long id;
 
-    @OneToMany(mappedBy = "walletReqTb")
-    private List<TransactionInfoTb> transactionInfoTb = new ArrayList<>();
-
-    /** 매장 아이디 */
+    /** 가맹점 아이디 */
+    @Column(length = 32)
     private String merchantId;
 
-    /** 매장 멤버 아이디 */
-    private String merchantMemberId;
+    /** tossPayment ID*/
+    @Column(length = 32)
+    private String tossPaymentId;
 
-    private String orderId;
-    /** 주문번호 */
-    private String orderNum;
-
-    /** 가격 */
-    private Integer amount;
-
-    protected WalletReqTb() {
+    @OneToMany(mappedBy = "storeInfo")
+    private List<UserInfo> userInfos = new ArrayList<>();
+    @OneToMany(mappedBy = "storeInfo")
+    private List<TransactionInfo> transactionInfos = new ArrayList<>();
+    protected StoreInfo() {
 
     }
 }

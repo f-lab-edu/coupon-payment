@@ -11,7 +11,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @Entity
-public class MyWalletInfoTb extends BaseEntity{
+public class MyWalletInfo extends BaseEntity{
     @Id
     @Column(name = "myWalletInfoId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +26,7 @@ public class MyWalletInfoTb extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userInfoId")
-    private UserInfoTb userInfoTb;
+    private UserInfo userInfo;
 
     @Column(length = 64)
     private String cardId;
@@ -49,7 +48,7 @@ public class MyWalletInfoTb extends BaseEntity{
     @Column(length = 32)
     private String ownerType;
 
-    @OneToMany(mappedBy = "myWalletInfoTb")
-    private List<TransactionInfoTb> transactionInfoTb = new ArrayList<>();
-    protected MyWalletInfoTb() {}
+    @OneToMany(mappedBy = "myWalletInfo")
+    private List<TransactionInfo> transactionInfo = new ArrayList<>();
+    protected MyWalletInfo() {}
 }

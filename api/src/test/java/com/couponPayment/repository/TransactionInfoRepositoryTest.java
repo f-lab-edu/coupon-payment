@@ -1,89 +1,85 @@
-/*
 package com.couponPayment.repository;
 
-import com.couponPayment.entity.TransactionInfoTb;
-import com.couponPayment.entity.dto.TransactionInfoDto;
-import com.couponPayment.entity.mapper.TransactionMapper;
+import com.couponPayment.entity.TransactionInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
-class TransactionInfoRepositoryTest extends CommonReposity{
+@DataJpaTest
+class TransactionInfoRepositoryTest {
     @Autowired
     private TransactionInfoRepository transactionInfoRepository;
-    @MockitoBean
-    private TransactionMapper transactionMapper;
 
-    private TransactionInfoTb transactionInfoTb;
-    private TransactionInfoDto transactionInfoDto;
+    @Autowired
+    private TestEntityManager testEntityManager;
 
     @BeforeEach
-    public void setting(){
-        transactionInfoDto = TransactionInfoDto
-                .builder()
-                .tranNum("tranNum")
-                .requestDt("2025-03-10T09:23:27+09:00")
-                .approvalAmount(1000)
-                .approvalDt("2025-03-10T09:23:27+09:00")
-                .cancelAmount(1000)
-                .cancelDt("2025-03-10T09:23:27+09:00")
-                .installment(0)
-                .callbackUrl("https://www.naver.com")
-                .myWalletInfoId(null)
-                .userInfoId(null)
-                .storeInfoId(null)
-                .walletReqId(null)
-                .build();
+    void resetAutoIncrement() {
+        testEntityManager.getEntityManager()
+                .createNativeQuery("ALTER TABLE transactionInfo ALTER COLUMN transactionInfoId RESTART WITH 1")
+                .executeUpdate();
+    }
 
-        transactionInfoTb =new TransactionInfoTb(
+    @Test
+    public void save(){
+        TransactionInfo transactionInfo =new TransactionInfo(
                 null,  // ID (자동 생성)
                 null,
                 null,
                 null,
                 null,
-                transactionInfoDto.getTranNum(),
-                Timestamp.valueOf(LocalDateTime.parse(transactionInfoDto.getRequestDt(), DateTimeFormatter.ISO_OFFSET_DATE_TIME)),
-                transactionInfoDto.getApprovalAmount(),
-                Timestamp.valueOf(LocalDateTime.parse(transactionInfoDto.getApprovalDt(), DateTimeFormatter.ISO_OFFSET_DATE_TIME)),
-                transactionInfoDto.getApprovalNum(),
-                transactionInfoDto.getCancelAmount(),
-                Timestamp.valueOf(LocalDateTime.parse(transactionInfoDto.getCancelDt(), DateTimeFormatter.ISO_OFFSET_DATE_TIME)),
-                transactionInfoDto.getInstallment(),
-                transactionInfoDto.getCallbackUrl()
+                "tranNum",
+                "2025-03-10T09:23:27+09:00",
+                1000,
+                "2025-03-10T09:23:27+09:00",
+                "approvalNum",
+                1000,
+                "2025-03-10T09:23:27+09:00",
+                0,
+                "https://www.naver.com"
         );
 
-        // Mock 설정
-        when(transactionMapper.toEntity(transactionInfoDto)).thenReturn(transactionInfoTb);
-        when(transactionMapper.toDto(transactionInfoTb)).thenReturn(transactionInfoDto);
+        transactionInfoRepository.save(transactionInfo);
 
-        transactionInfoTb = transactionInfoRepository.save(transactionMapper.toEntity(transactionInfoDto));
-        assertThat(transactionInfoDto)
-                .usingRecursiveComparison()
-                .ignoringFields("myWalletInfoId","userInfoId","storeInfoId" ,"walletReqId","requestDt","approvalDt","cancelDt")
-                .isEqualTo(transactionInfoTb);
+        assertThat(transactionInfo.getId()).isEqualTo(1L);
+        assertThat(transactionInfo.getTranNum()).isEqualTo("tranNum");
+        assertThat(transactionInfo.getRequestDt()).isEqualTo("2025-03-10T09:23:27+09:00");
+        assertThat(transactionInfo.getApprovalAmount()).isEqualTo(1000);
+        assertThat(transactionInfo.getApprovalDt()).isEqualTo("2025-03-10T09:23:27+09:00");
+        assertThat(transactionInfo.getCallbackUrl()).isEqualTo("https://www.naver.com");
 
     }
-
     @Test
     public void findById(){
-        transactionInfoTb = transactionInfoRepository.findById(1L).get();
-        transactionInfoDto = transactionMapper.toDto(transactionInfoTb);
+        TransactionInfo transactionInfo =new TransactionInfo(
+                null,  // ID (자동 생성)
+                null,
+                null,
+                null,
+                null,
+                "tranNum",
+                "2025-03-10T09:23:27+09:00",
+                1000,
+                "2025-03-10T09:23:27+09:00",
+                "approvalNum",
+                1000,
+                "2025-03-10T09:23:27+09:00",
+                0,
+                "https://www.naver.com"
+        );
 
-        assertThat(transactionInfoDto)
-                .usingRecursiveComparison()
-                .ignoringFields("myWalletInfoId","userInfoId","storeInfoId" ,"walletReqId","requestDt","approvalDt","cancelDt")
-                .isEqualTo(transactionInfoTb);
+        transactionInfoRepository.save(transactionInfo);
 
-        assertThat(transactionInfoTb.getApprovalDt().toLocalDateTime()
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                .isEqualTo("2025-03-10 09:23:27");
+        transactionInfo = transactionInfoRepository.findById(1L).get();
+        assertThat(transactionInfo.getId()).isEqualTo(1L);
+        assertThat(transactionInfo.getTranNum()).isEqualTo("tranNum");
+        assertThat(transactionInfo.getRequestDt()).isEqualTo("2025-03-10T09:23:27+09:00");
+        assertThat(transactionInfo.getApprovalAmount()).isEqualTo(1000);
+        assertThat(transactionInfo.getApprovalDt()).isEqualTo("2025-03-10T09:23:27+09:00");
+        assertThat(transactionInfo.getCallbackUrl()).isEqualTo("https://www.naver.com");
     }
-}*/
+}

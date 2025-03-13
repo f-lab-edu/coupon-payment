@@ -1,54 +1,52 @@
 package com.couponPayment.repository;
 
-import com.couponPayment.entity.StoreInfoTb;
-import com.couponPayment.entity.dto.StoreInfoDto;
-import com.couponPayment.entity.mapper.StoreInfoMapper;
+import com.couponPayment.entity.StoreInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
-
-public class StoreInfoRepositoryTest extends CommonReposity{
+@DataJpaTest
+public class StoreInfoRepositoryTest{
     @Autowired
     private StoreInfoRepository storeInfoRepository;
-    @MockitoBean
-    private StoreInfoMapper storeInfoMapper;
 
-    private StoreInfoDto storeInfoDto;
-    private StoreInfoTb storeInfoTb;
+    @Autowired
+    private TestEntityManager testEntityManager;
 
     @BeforeEach
-    public void setting(){
-        storeInfoDto = StoreInfoDto
-                .builder()
-                .merchantId("bbq")
-                .tossPaymentId("toss")
-                .build();
-        storeInfoTb = new StoreInfoTb(
-                null,storeInfoDto.getMerchantId(),storeInfoDto.getTossPaymentId(),null,null
-        );
-
-        // Mock 설정
-        when(storeInfoMapper.toEntity(storeInfoDto)).thenReturn(storeInfoTb);
-        when(storeInfoMapper.toDto(storeInfoTb)).thenReturn(storeInfoDto);
-
-        storeInfoTb = storeInfoRepository.save(storeInfoMapper.toEntity(storeInfoDto));
-        assertThat(storeInfoDto)
-                .usingRecursiveComparison()
-                .isEqualTo(storeInfoTb);
+    void resetAutoIncrement() {
+        testEntityManager.getEntityManager()
+                .createNativeQuery("ALTER TABLE storeInfo ALTER COLUMN storeInfoId RESTART WITH 1")
+                .executeUpdate();
     }
 
     @Test
-    public void findById(){
-        storeInfoTb = storeInfoRepository.findById(1L).get();
-        storeInfoDto = storeInfoMapper.toDto(storeInfoTb);
+    public void save() {
+        StoreInfo storeInfo = new StoreInfo(
+                null,"bbq","toss",null,null);
 
-        assertThat(storeInfoDto)
-                .usingRecursiveComparison()
-                .isEqualTo(storeInfoTb);
+        storeInfoRepository.save(storeInfo);
+
+        assertThat(storeInfo.getId()).isEqualTo(1L);
+        assertThat(storeInfo.getMerchantId()).isEqualTo("bbq");
+        assertThat(storeInfo.getTossPaymentId()).isEqualTo("toss");
+    }
+
+    @Test
+    public void findById() {
+        StoreInfo storeInfo = new StoreInfo(
+                null,"bbq","toss",null,null);
+
+        storeInfoRepository.save(storeInfo);
+
+        storeInfo = storeInfoRepository.findById(1L).get();
+
+        assertThat(storeInfo.getId()).isEqualTo(1L);
+        assertThat(storeInfo.getMerchantId()).isEqualTo("bbq");
+        assertThat(storeInfo.getTossPaymentId()).isEqualTo("toss");
     }
 }

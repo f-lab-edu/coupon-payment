@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Getter
 @AllArgsConstructor
-public class UserInfoTb extends BaseEntity{
+public class UserInfo extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userInfoId")
@@ -18,7 +18,7 @@ public class UserInfoTb extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "storeInfoId")
-    private StoreInfoTb storeInfoTb;
+    private StoreInfo storeInfo;
 
     @Column(length = 32)
     private String name;
@@ -35,10 +35,10 @@ public class UserInfoTb extends BaseEntity{
     private Integer useFlag;
 
 
-    @OneToMany(mappedBy = "userInfoTb")
-    private List<MyWalletInfoTb> myWalletInfoTbs = new ArrayList<>();
+    @OneToMany(mappedBy = "userInfo")
+    private List<MyWalletInfo> myWalletInfos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userInfoTb")
-    private List<TransactionInfoTb> transactionInfoTbs = new ArrayList<>();
-    protected UserInfoTb() {}
+    @OneToMany(mappedBy = "userInfo")
+    private List<TransactionInfo> transactionInfos = new ArrayList<>();
+    protected UserInfo() {}
 }

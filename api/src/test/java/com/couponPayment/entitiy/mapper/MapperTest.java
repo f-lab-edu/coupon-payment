@@ -1,10 +1,10 @@
 package com.couponPayment.entitiy.mapper;
 
-import com.couponPayment.entity.MyWalletInfoTb;
-import com.couponPayment.entity.StoreInfoTb;
-import com.couponPayment.entity.TransactionInfoTb;
-import com.couponPayment.entity.UserInfoTb;
-import com.couponPayment.entity.WalletReqTb;
+import com.couponPayment.entity.MyWalletInfo;
+import com.couponPayment.entity.StoreInfo;
+import com.couponPayment.entity.TransactionInfo;
+import com.couponPayment.entity.UserInfo;
+import com.couponPayment.entity.WalletReq;
 import com.couponPayment.entity.dto.MyWalletInfoDto;
 import com.couponPayment.entity.dto.StoreInfoDto;
 import com.couponPayment.entity.dto.TransactionInfoDto;
@@ -36,12 +36,12 @@ public class MapperTest {
     @DisplayName("WalletReq Mapper EntityToDto")
     public void walletReq_Mapper_EntityToDto() {
 
-        WalletReqTb walletReqTb = new WalletReqTb(1L, null, "bbq", "young", "orderId", "orderNum", 1000);
-        WalletReqDto walletReqDto = walletReqMapper.toDto(walletReqTb);
+        WalletReq walletReq = new WalletReq(1L, null, "bbq", "young", "orderId", "orderNum", 1000);
+        WalletReqDto walletReqDto = walletReqMapper.toDto(walletReq);
 
         assertThat(walletReqDto)
                 .usingRecursiveComparison()
-                .isEqualTo(walletReqTb);
+                .isEqualTo(walletReq);
     }
 
     @Test
@@ -56,22 +56,22 @@ public class MapperTest {
                 .orderNum("OrderNum")
                 .amount(1000)
                 .build();
-        WalletReqTb walletReqTb = walletReqMapper.toEntity(walletReqDto);
+        WalletReq walletReq = walletReqMapper.toEntity(walletReqDto);
 
         assertThat(walletReqDto)
                 .usingRecursiveComparison()
-                .isEqualTo(walletReqTb);
+                .isEqualTo(walletReq);
     }
 
     @Test
     @DisplayName("StoreInfo Mapper EntityToDto")
     public void storeInfo_Mapper_EntityToDto() {
-        StoreInfoTb storeInfoTb = new StoreInfoTb(1L, "bbq", "toss", null, null);
-        StoreInfoDto storeInfoDto = storeInfoMapper.toDto(storeInfoTb);
+        StoreInfo storeInfo = new StoreInfo(1L, "bbq", "toss", null, null);
+        StoreInfoDto storeInfoDto = storeInfoMapper.toDto(storeInfo);
 
         assertThat(storeInfoDto)
                 .usingRecursiveComparison()
-                .isEqualTo(storeInfoTb);
+                .isEqualTo(storeInfo);
     }
 
     @Test
@@ -82,28 +82,28 @@ public class MapperTest {
                 .merchantId("bbq")
                 .tossPaymentId("toss")
                 .build();
-        StoreInfoTb storeInfoTb = storeInfoMapper.toEntity(storeInfoDto);
+        StoreInfo storeInfo = storeInfoMapper.toEntity(storeInfoDto);
 
         assertThat(storeInfoDto)
                 .usingRecursiveComparison()
-                .isEqualTo(storeInfoTb);
+                .isEqualTo(storeInfo);
     }
 
     @Test
     @DisplayName("UserInfo Mapper EntityToDto")
     public void UserInfo_Mapper_EntityToDto() {
-        StoreInfoTb storeInfoTb = new StoreInfoTb(1L, "bbq", "toss", null, null);
+        StoreInfo storeInfo = new StoreInfo(1L, "bbq", "toss", null, null);
 
-        UserInfoTb userInfoTb = new UserInfoTb(1L, storeInfoTb, "young", "010", "naver.com", 0, null, null);
-        UserInfoDto userInfoDto = userInfoMapper.toDto(userInfoTb);
+        UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, null, null);
+        UserInfoDto userInfoDto = userInfoMapper.toDto(userInfo);
 
         assertThat(userInfoDto)
                 .usingRecursiveComparison()
                 .ignoringFields("storeInfoId")
-                .isEqualTo(userInfoTb);
+                .isEqualTo(userInfo);
 
         assertThat(userInfoDto.getStoreInfoId())
-                .isEqualTo(userInfoTb.getStoreInfoTb().getId());
+                .isEqualTo(userInfo.getStoreInfo().getId());
     }
 
     @Test
@@ -117,29 +117,29 @@ public class MapperTest {
                 .useFlag(0)
                 .storeInfoId(1L)
                 .build();
-        UserInfoTb userInfoTb = userInfoMapper.toEntity(userInfoDto);
+        UserInfo userInfo = userInfoMapper.toEntity(userInfoDto);
 
         assertThat(userInfoDto)
                 .usingRecursiveComparison()
                 .ignoringFields("storeInfoId")
-                .isEqualTo(userInfoTb);
+                .isEqualTo(userInfo);
 
         assertThat(userInfoDto.getStoreInfoId())
-                .isEqualTo(userInfoTb.getStoreInfoTb().getId());
+                .isEqualTo(userInfo.getStoreInfo().getId());
     }
 
     @Test
     @DisplayName("MyWalletInfo Mapper EntityToDto")
     public void MyWalletInfo_Mapper_EntityToDto() {
-        UserInfoTb userInfoTb = new UserInfoTb(1L, null, "young", "010", "naver.com", 0, null, null);
+        UserInfo userInfo = new UserInfo(1L, null, "young", "010", "naver.com", 0, null, null);
 
-        MyWalletInfoTb myWalletInfoTb = new MyWalletInfoTb(1L, userInfoTb, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "number", "cardType", "ownerType", null);
-        MyWalletInfoDto myWalletInfoDto = myWalletInfoMapper.toDto(myWalletInfoTb);
+        MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "number", "cardType", "ownerType", null);
+        MyWalletInfoDto myWalletInfoDto = myWalletInfoMapper.toDto(myWalletInfo);
 
         assertThat(myWalletInfoDto)
                 .usingRecursiveComparison()
                 .ignoringFields("userInfoId")
-                .isEqualTo(myWalletInfoTb);
+                .isEqualTo(myWalletInfo);
     }
 
     @Test
@@ -156,33 +156,33 @@ public class MapperTest {
                 .ownerType("4")
                 .userInfoId(1L)
                 .build();
-        MyWalletInfoTb myWalletInfoTb = myWalletInfoMapper.toEntity(myWalletInfoDto);
+        MyWalletInfo myWalletInfo = myWalletInfoMapper.toEntity(myWalletInfoDto);
 
         assertThat(myWalletInfoDto)
                 .usingRecursiveComparison()
                 .ignoringFields("userInfoId")
-                .isEqualTo(myWalletInfoTb);
+                .isEqualTo(myWalletInfo);
     }
 
 
     @Test
     @DisplayName("TransactionInfo Mapper EntityToDto")
     public void TransactionInfo_Mapper_EntityToEntity() {
-        WalletReqTb walletReqTb = new WalletReqTb(1L, null, "bbq", "young", "orderId", "orderNum", 1000);
-        StoreInfoTb storeInfoTb = new StoreInfoTb(1L, "bbq", "toss", null, null);
-        UserInfoTb userInfoTb = new UserInfoTb(1L, storeInfoTb, "young", "010", "naver.com", 0, null, null);
-        MyWalletInfoTb myWalletInfoTb = new MyWalletInfoTb(1L, userInfoTb, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "number", "cardType", "ownerType", null);
+        WalletReq walletReq = new WalletReq(1L, null, "bbq", "young", "orderId", "orderNum", 1000);
+        StoreInfo storeInfo = new StoreInfo(1L, "bbq", "toss", null, null);
+        UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, null, null);
+        MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "number", "cardType", "ownerType", null);
 
-        TransactionInfoTb transactionInfoTb = new TransactionInfoTb(1L, myWalletInfoTb, walletReqTb, storeInfoTb, userInfoTb
+        TransactionInfo transactionInfo = new TransactionInfo(1L, myWalletInfo, walletReq, storeInfo, userInfo
                 , "tranNum", "2025-03-10T09:23:27+09:00", 1000, "2025-03-10T09:23:27+09:00", "approvalNum",
                 100, "2025-03-10T09:23:27+09:00", 0, "callBackUrl");
 
-        TransactionInfoDto transactionInfoDto = transactionMapper.toDto(transactionInfoTb);
+        TransactionInfoDto transactionInfoDto = transactionMapper.toDto(transactionInfo);
 
         assertThat(transactionInfoDto)
                 .usingRecursiveComparison()
                 .ignoringFields("myWalletInfoId", "userInfoId", "storeInfoId", "walletReqId")
-                .isEqualTo(transactionInfoTb);
+                .isEqualTo(transactionInfo);
 
         assertThat(transactionInfoDto.getMyWalletInfoId()).isEqualTo(1L);
         assertThat(transactionInfoDto.getUserInfoId()).isEqualTo(1L);
@@ -211,15 +211,15 @@ public class MapperTest {
                 .walletReqId(1L)
                 .build();
 
-        TransactionInfoTb transactionInfoTb = transactionMapper.toEntity(transactionInfoDto);
+        TransactionInfo transactionInfo = transactionMapper.toEntity(transactionInfoDto);
         assertThat(transactionInfoDto)
                 .usingRecursiveComparison()
                 .ignoringFields("myWalletInfoId", "userInfoId", "storeInfoId", "walletReqId")
-                .isEqualTo(transactionInfoTb);
+                .isEqualTo(transactionInfo);
 
-        assertThat(transactionInfoTb.getMyWalletInfoTb().getId()).isEqualTo(1L);
-        assertThat(transactionInfoTb.getUserInfoTb().getId()).isEqualTo(1L);
-        assertThat(transactionInfoTb.getStoreInfoTb().getId()).isEqualTo(1L);
-        assertThat(transactionInfoTb.getWalletReqTb().getId()).isEqualTo(1L);
+        assertThat(transactionInfo.getMyWalletInfo().getId()).isEqualTo(1L);
+        assertThat(transactionInfo.getUserInfo().getId()).isEqualTo(1L);
+        assertThat(transactionInfo.getStoreInfo().getId()).isEqualTo(1L);
+        assertThat(transactionInfo.getWalletReq().getId()).isEqualTo(1L);
     }
 }
