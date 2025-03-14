@@ -27,10 +27,10 @@ class TossBillingServiceTest {
 
     @Value("${toss.secretKey}")
     private String secretTossKey;
-    @Value("${toss.payment_url}")
-    private String payment_url;
-    @Value("${toss.payment_cancel_url}")
-    private String payment_cancel_url;
+    @Value("${toss.paymentUrl}")
+    private String paymentUrl;
+    @Value("${toss.paymentCancelUrl}")
+    private String paymentCancelUrl;
 
     @Test
     public void getBillingKey(){
@@ -82,7 +82,7 @@ class TossBillingServiceTest {
                 .orderName("orderName")
                 .build();
         //
-        String url = payment_url+billingKey;
+        String url = paymentUrl+billingKey;
 
         // Authorization에 사용될 시크릿 키
         String secretKey = secretTossKey;
@@ -114,7 +114,7 @@ class TossBillingServiceTest {
                 .cancelReason("취소 이유")
                 .build();
         //
-        String url = payment_cancel_url.replace("{paymentKey}", tossBillingPaymentCancelReq.getPaymentKey());
+        String url = paymentCancelUrl.replace("{paymentKey}", tossBillingPaymentCancelReq.getPaymentKey());
 
         // Authorization에 사용될 시크릿 키
         String secretKey = secretTossKey;

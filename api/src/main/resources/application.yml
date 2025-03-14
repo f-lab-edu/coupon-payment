@@ -26,8 +26,7 @@ logging:
 
 toss:
   clientKey: ${CLIENT_KEY}
-  secretKey: ${SECRET_KEY}
+
   securityKey: ${SECURITY_KEY}
-  billingKey_url: "https://api.tosspayments.com/v1/billing/authorizations/issue"
-  payment_url: "https://api.tosspayments.com/v1/billing/"
-  payment_cancel_url: "https://api.tosspayments.com/v1/payments/{paymentKey}/cancel"
+  billingKeyUrl: "https://api.tosspayments.com/v1/billing/authorizations/issue"
+
