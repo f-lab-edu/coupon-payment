@@ -1,2 +1,32 @@
 server:
   port: 8081
+
+spring:
+  config:
+    import:
+      - optional:file:./api/.env[.properties]   # 로컬에서 API 모듈 안의 .env 파일 읽기
+      - optional:file:.env[.properties]         # 테스트에서 클래스패스 내의 .env 파일 읽기
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+logging:
+  level:
+    root: INFO # 기본 레벨 (root 레벨)
+    org.springframework.web: DEBUG # Spring Web 패키지 디버그 레벨
+
+toss:
+  clientKey: ${CLIENT_KEY}
+
+  securityKey: ${SECURITY_KEY}
+  billingKeyUrl: "https://api.tosspayments.com/v1/billing/authorizations/issue"
+
