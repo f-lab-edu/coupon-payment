@@ -25,7 +25,13 @@ spring:
       enabled: true
       path: /h2-console
 
+logging:
+  level:
+    root: INFO # 기본 레벨 (root 레벨)
+    org.springframework.web: DEBUG # Spring Web 패키지 디버그 레벨
+
 toss:
   clientKey: ${CLIENT_KEY}
   secretKey: ${SECRET_KEY}
   securityKey: ${SECURITY_KEY}
+  billingKeyUrl: "https://api.tosspayments.com/v1/billing/authorizations/issue"
