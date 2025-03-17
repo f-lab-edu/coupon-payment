@@ -78,6 +78,8 @@ class TossBillingServiceTest {
                 .builder()
                 .customerKey(customerKey)
                 .amount(1000)
+                .cardId(billingKey)
+                .secretKey(secretTossKey)
                 .orderId("orderId10")
                 .orderName("orderName")
                 .build();

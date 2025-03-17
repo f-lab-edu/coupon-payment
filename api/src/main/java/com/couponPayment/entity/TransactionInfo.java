@@ -1,13 +1,8 @@
 package com.couponPayment.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.couponPayment.consts.PaymentStatus;
+import com.couponPayment.dto.TossBillingPaymentRes;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -48,7 +43,7 @@ public class TransactionInfo extends BaseEntity{
     private String tranNum;
 
     private String requestDt;
-    //private Integer amount;
+    private Integer amount;
 
     private Integer approvalAmount;
     private String approvalDt;
@@ -63,7 +58,18 @@ public class TransactionInfo extends BaseEntity{
     @Column(length = 128)
     private String callbackUrl;
 
+    //결제 상태
+    private String status;
     protected TransactionInfo() {
 
+    }
+
+    public void approvalPayment(TossBillingPaymentRes tossBillingPaymentRes){
+        this.tranNum = tossBillingPaymentRes.getPaymentKey();
+        this.approvalAmount = tossBillingPaymentRes.getTotalAmount();
+        this.approvalDt = tossBillingPaymentRes.getApprovedAt();
+        this.approvalNum = tossBillingPaymentRes.getCard().getApproveNo();
+        this.installment = tossBillingPaymentRes.getCard().getInstallmentPlanMonths();
+        this.status = tossBillingPaymentRes.getStatus();
     }
 }

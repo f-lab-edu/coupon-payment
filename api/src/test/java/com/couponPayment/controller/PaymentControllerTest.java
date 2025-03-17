@@ -114,7 +114,7 @@ class PaymentControllerTest {
         assertThat(paymentHistoryRes.getMerchantMemberId()).isEqualTo("young");
 
         assertThat(paymentHistoryRes.getPayments().get(0).getAmount()).isEqualTo(1000);
-        assertThat(paymentHistoryRes.getPayments().get(0).getPaymentStatus()).isEqualTo(PaymentStatus.COMPLETED);
+        assertThat(paymentHistoryRes.getPayments().get(0).getPaymentStatus()).isEqualTo(PaymentStatus.DONE);
         assertThat(paymentHistoryRes.getPayments().get(0).getOrderNum()).isEqualTo("12345");
         assertThat(paymentHistoryRes.getPayments().get(0).getApprovalDate()).isEqualTo("20250302112233");
 

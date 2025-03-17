@@ -65,7 +65,7 @@ public class PaymentController {
         PaymentHistoryRes.Payments payments1 = PaymentHistoryRes.Payments
                 .builder()
                 .amount(1000)
-                .paymentStatus(PaymentStatus.COMPLETED)
+                .paymentStatus(PaymentStatus.DONE)
                 .orderNum("12345")
                 .approvalDate("20250302112233")
                 .build();

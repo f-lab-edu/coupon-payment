@@ -17,15 +17,11 @@ import java.sql.Timestamp;
 @Builder
 @ToString
 public class TransactionInfoDto {
-
-    //private String cardId;
-    //private String orderNum;
-   // private String orderId;
-    //private Integer amount;
+    /** 이 값으로 거래 취소 */
     private String tranNum;
 
     private String requestDt;
-
+    private Integer amount;
     private Integer approvalAmount;
     private String approvalDt;
     private String approvalNum;
@@ -33,6 +29,7 @@ public class TransactionInfoDto {
     private String cancelDt;
     private Integer installment;
     private String callbackUrl;
+    private String status;
 
     private Long myWalletInfoId;
     private Long userInfoId;

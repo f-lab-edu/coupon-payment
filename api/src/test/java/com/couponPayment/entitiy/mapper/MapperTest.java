@@ -174,8 +174,8 @@ public class MapperTest {
         MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "number", "cardType", "ownerType", 0,null);
 
         TransactionInfo transactionInfo = new TransactionInfo(1L, myWalletInfo, walletReq, storeInfo, userInfo
-                , "tranNum", "2025-03-10T09:23:27+09:00", 1000, "2025-03-10T09:23:27+09:00", "approvalNum",
-                100, "2025-03-10T09:23:27+09:00", 0, "callBackUrl");
+                , "tranNum", "2025-03-10T09:23:27+09:00", 1000,1000, "2025-03-10T09:23:27+09:00", "approvalNum",
+                100, "2025-03-10T09:23:27+09:00", 0, "callBackUrl", "DONE");
 
         TransactionInfoDto transactionInfoDto = transactionMapper.toDto(transactionInfo);
 
@@ -198,6 +198,7 @@ public class MapperTest {
                 .builder()
                 .tranNum("tranNum")
                 .requestDt("2025-03-10T09:23:27+09:00")
+                .amount(1000)
                 .approvalAmount(1000)
                 .approvalDt("2025-03-10T09:23:27+09:00")
                 .approvalNum("approvalNum")
@@ -209,6 +210,7 @@ public class MapperTest {
                 .userInfoId(1L)
                 .storeInfoId(1L)
                 .walletReqId(1L)
+                .status("DONE")
                 .build();
 
         TransactionInfo transactionInfo = transactionMapper.toEntity(transactionInfoDto);
