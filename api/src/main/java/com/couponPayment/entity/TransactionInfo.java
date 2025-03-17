@@ -1,6 +1,7 @@
 package com.couponPayment.entity;
 
 import com.couponPayment.consts.PaymentStatus;
+import com.couponPayment.dto.TossBillingPaymentCancelRes;
 import com.couponPayment.dto.TossBillingPaymentRes;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -71,5 +72,11 @@ public class TransactionInfo extends BaseEntity{
         this.approvalNum = tossBillingPaymentRes.getCard().getApproveNo();
         this.installment = tossBillingPaymentRes.getCard().getInstallmentPlanMonths();
         this.status = tossBillingPaymentRes.getStatus();
+    }
+
+    public void cancelPayment(TossBillingPaymentCancelRes tossBillingPaymentCancelRes){
+        this.cancelAmount = tossBillingPaymentCancelRes.getCancels().get(0).getCancelAmount();
+        this.cancelDt = tossBillingPaymentCancelRes.getCancels().get(0).getCanceledAt();
+        this.status = tossBillingPaymentCancelRes.getCancels().get(0).getCancelStatus();
     }
 }

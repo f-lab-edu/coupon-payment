@@ -1,5 +1,6 @@
 package com.couponPayment.repository;
 
+import com.couponPayment.dto.TossBillingPaymentCancelRes;
 import com.couponPayment.dto.TossBillingPaymentRes;
 import com.couponPayment.entity.TransactionInfo;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -120,14 +124,14 @@ class TransactionInfoRepositoryTest {
 
         TossBillingPaymentRes tossBillingPaymentRes =
                 TossBillingPaymentRes
-                .builder()
-                .paymentKey("결제 키 값")
-                .requestedAt("요청 시간")
-                .totalAmount(1000)
-                .status("DONE")
-                .approvedAt("승인 시간")
-                .card(card)
-                .build();
+                        .builder()
+                        .paymentKey("결제 키 값")
+                        .requestedAt("요청 시간")
+                        .totalAmount(1000)
+                        .status("DONE")
+                        .approvedAt("승인 시간")
+                        .card(card)
+                        .build();
 
         transactionInfo.approvalPayment(tossBillingPaymentRes);
 
@@ -137,6 +141,50 @@ class TransactionInfoRepositoryTest {
         assertThat(transactionInfo.getApprovalAmount()).isEqualTo(tossBillingPaymentRes.getTotalAmount());
         assertThat(transactionInfo.getStatus()).isEqualTo(tossBillingPaymentRes.getStatus());
         assertThat(transactionInfo.getApprovalDt()).isEqualTo(tossBillingPaymentRes.getApprovedAt());
+    }
+
+    @Test
+    public void cancelPayment() {
+        TransactionInfo transactionInfo = new TransactionInfo(
+                null,  // ID (자동 생성)
+                null,
+                null,
+                null,
+                null,
+                "tranNum",
+                "2025-03-10T09:23:27+09:00",
+                1000,
+                1000,
+                "2025-03-10T09:23:27+09:00",
+                "approvalNum",
+                1000,
+                "2025-03-10T09:23:27+09:00",
+                0,
+                "https://www.naver.com",
+                "DONE"
+        );
+        transactionInfoRepository.save(transactionInfo);
+
+        List<TossBillingPaymentCancelRes.Cancels> cancels = new ArrayList<>();
+        TossBillingPaymentCancelRes.Cancels cancel = TossBillingPaymentCancelRes.Cancels
+                .builder()
+                .canceledAt("2024-02-13T12:20:23+09:00")
+                .cancelAmount(1000)
+                .cancelStatus("DONE")
+                .build();
+        cancels.add(cancel);
+
+        TossBillingPaymentCancelRes tossBillingPaymentRes = TossBillingPaymentCancelRes
+                .builder()
+                .cancels(cancels)
+                .build();
+
+        transactionInfo.cancelPayment(tossBillingPaymentRes);
+
+        assertThat(transactionInfo.getCancelDt().equals(cancel.getCanceledAt()));
+        assertThat(transactionInfo.getCancelAmount().equals(cancel.getCancelAmount()));
+        assertThat(transactionInfo.getStatus().equals(cancel.getCancelStatus()));
+
     }
 
     @Test

@@ -191,6 +191,7 @@ public class PaymentServiceTest {
                 .builder()
                 .requestDt(formattedDate)
                 .amount(1000)
+                .tranNum(transactionInfo.getTranNum())
                 .myWalletInfoId(transactionInfo.getMyWalletInfo().getId())
                 .userInfoId(transactionInfo.getUserInfo().getId())
                 .storeInfoId(transactionInfo.getStoreInfo().getId())
@@ -225,5 +226,14 @@ public class PaymentServiceTest {
                                 .cancels(cancels)
                                 .build()
                 );
+
+        //결제 취소 성공 로직
+        TossBillingPaymentCancelRes tossBillingPaymentCancelRes =
+                tossBillingService.billingPaymentCancel(tossBillingPaymentCancelReq);
+
+        //분할 취소를 위해 list로 있지만 내 서비스에 분할 취소는 없다
+        if(tossBillingPaymentCancelRes.getCancels().get(0).getCancelStatus().equals(PaymentStatus.DONE.name())){
+            cancelTransactionInfo.cancelPayment(tossBillingPaymentCancelRes);
+        }
     }
 }
