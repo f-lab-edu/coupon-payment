@@ -138,4 +138,31 @@ class TransactionInfoRepositoryTest {
         assertThat(transactionInfo.getStatus()).isEqualTo(tossBillingPaymentRes.getStatus());
         assertThat(transactionInfo.getApprovalDt()).isEqualTo(tossBillingPaymentRes.getApprovedAt());
     }
+
+    @Test
+    public void findByTranNumAndStatus() {
+        TransactionInfo transactionInfo = new TransactionInfo(
+                null,  // ID (자동 생성)
+                null,
+                null,
+                null,
+                null,
+                "tranNum",
+                "2025-03-10T09:23:27+09:00",
+                1000,
+                1000,
+                "2025-03-10T09:23:27+09:00",
+                "approvalNum",
+                1000,
+                "2025-03-10T09:23:27+09:00",
+                0,
+                "https://www.naver.com",
+                "DONE"
+        );
+        transactionInfoRepository.save(transactionInfo);
+
+        transactionInfo = transactionInfoRepository.findByTranNumAndStatus("tranNum", "DONE").get();
+        assertThat(transactionInfo.getTranNum()).isEqualTo("tranNum");
+        assertThat(transactionInfo.getStatus()).isEqualTo("DONE");
+    }
 }

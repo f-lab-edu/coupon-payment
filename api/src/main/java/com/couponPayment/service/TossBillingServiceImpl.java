@@ -14,9 +14,13 @@ import java.util.Base64;
 public class TossBillingServiceImpl implements TossBillingService{
 
     private final ApiService<TossBillingPaymentRes> billingResApiService;
+    private final ApiService<TossBillingPaymentCancelRes> billingPaymentCancelResApiService;
 
     @Value("${toss.paymentUrl}")
     private String paymentUrl;
+
+    @Value("${toss.paymentCancelUrl}")
+    private String paymentCancelUrl;
 
     @Override
     public TossBillingRes getBillingKey(TossBillingReq tossBillingReq) {
@@ -35,7 +39,7 @@ public class TossBillingServiceImpl implements TossBillingService{
 
         /** Todo
          * 서비스 -> 외부 API(토스)
-         * 성공 실패, 에러에 따른 핸들링 필요 
+         * 성공 실패, 에러에 따른 핸들링 필요
         * */
         TossBillingPaymentRes tossBillingPaymentRes = billingResApiService.post(url, headers, TossBillingPaymentRes.class).getBody();
 
@@ -44,6 +48,20 @@ public class TossBillingServiceImpl implements TossBillingService{
 
     @Override
     public TossBillingPaymentCancelRes billingPaymentCancel(TossBillingPaymentCancelReq tossBillingPaymentCancelReq) {
-        return null;
+        String url = paymentCancelUrl.replace("{paymentKey}", tossBillingPaymentCancelReq.getPaymentKey());
+        String secretKey = tossBillingPaymentCancelReq.getSecretKey();
+
+        String authHeader = "Basic " + Base64.getEncoder().encodeToString((secretKey + ":").getBytes());
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", authHeader);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        /** Todo
+         * 서비스 -> 외부 API(토스)
+         * 성공 실패, 에러에 따른 핸들링 필요
+         * */
+        TossBillingPaymentCancelRes tossBillingPaymentCancelRes = billingPaymentCancelResApiService.post(url, headers, TossBillingPaymentCancelRes.class).getBody();
+
+        return tossBillingPaymentCancelRes;
     }
 }

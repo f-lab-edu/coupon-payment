@@ -64,7 +64,7 @@ class PaymentControllerTest {
                 .builder()
                 .merchantId("가맹점")
                 .merchantMemberId("young")
-                .paymentKey("txn_12345")
+                .tranNum("txn_12345")
                 .build();
 
         ObjectMapper objectMapper = new ObjectMapper();

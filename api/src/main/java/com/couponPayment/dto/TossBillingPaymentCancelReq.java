@@ -16,4 +16,5 @@ import lombok.ToString;
 public class TossBillingPaymentCancelReq {
     private String paymentKey;
     private String cancelReason;
+    private String secretKey;
 }

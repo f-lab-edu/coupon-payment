@@ -1,10 +1,7 @@
 package com.couponPayment.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -13,6 +10,7 @@ import java.util.List;
 @Setter
 @Getter
 @ToString(callSuper = true)
+@SuperBuilder
 public class TossBillingPaymentCancelRes extends TossBillingPaymentRes{
     private List<Cancels> cancels;
 
@@ -21,6 +19,7 @@ public class TossBillingPaymentCancelRes extends TossBillingPaymentRes{
     @ToString
     @Setter
     @Getter
+    @Builder
     public static class Cancels {
         private String transactionKey;
         private String cancelReason;
