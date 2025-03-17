@@ -94,7 +94,7 @@ public class MapperTest {
     public void UserInfo_Mapper_EntityToDto() {
         StoreInfo storeInfo = new StoreInfo(1L, "bbq", "toss", null, null);
 
-        UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, null, null);
+        UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, "young","1234",null, null);
         UserInfoDto userInfoDto = userInfoMapper.toDto(userInfo);
 
         assertThat(userInfoDto)
@@ -131,9 +131,9 @@ public class MapperTest {
     @Test
     @DisplayName("MyWalletInfo Mapper EntityToDto")
     public void MyWalletInfo_Mapper_EntityToDto() {
-        UserInfo userInfo = new UserInfo(1L, null, "young", "010", "naver.com", 0, null, null);
+        UserInfo userInfo = new UserInfo(1L, null, "young", "010", "naver.com", 0, "young","1234",null, null);
 
-        MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "number", "cardType", "ownerType", null);
+        MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "number", "cardType", "ownerType",0, null);
         MyWalletInfoDto myWalletInfoDto = myWalletInfoMapper.toDto(myWalletInfo);
 
         assertThat(myWalletInfoDto)
@@ -170,8 +170,8 @@ public class MapperTest {
     public void TransactionInfo_Mapper_EntityToEntity() {
         WalletReq walletReq = new WalletReq(1L, null, "bbq", "young", "orderId", "orderNum", 1000);
         StoreInfo storeInfo = new StoreInfo(1L, "bbq", "toss", null, null);
-        UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, null, null);
-        MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "number", "cardType", "ownerType", null);
+        UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, "young","1234",null, null);
+        MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "number", "cardType", "ownerType", 0,null);
 
         TransactionInfo transactionInfo = new TransactionInfo(1L, myWalletInfo, walletReq, storeInfo, userInfo
                 , "tranNum", "2025-03-10T09:23:27+09:00", 1000, "2025-03-10T09:23:27+09:00", "approvalNum",

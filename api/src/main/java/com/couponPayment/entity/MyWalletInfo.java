@@ -47,6 +47,8 @@ public class MyWalletInfo extends BaseEntity{
     private String cardType;
     @Column(length = 32)
     private String ownerType;
+    /** 사용 유무 (0 : 정상, 1 : 카드 삭제) */
+    private Integer useFlag;
 
     @OneToMany(mappedBy = "myWalletInfo")
     private List<TransactionInfo> transactionInfo = new ArrayList<>();

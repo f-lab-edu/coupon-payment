@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 public class TossBillingPaymentReq {
     private String customerKey;
+    private String secretKey;
     private int amount;
     private String orderId;
     private String orderName;

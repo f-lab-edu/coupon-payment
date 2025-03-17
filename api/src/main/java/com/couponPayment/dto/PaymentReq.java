@@ -11,6 +11,7 @@ public class PaymentReq {
     private String merchantId;
     private String merchantMemberId;
     private String orderNum;
+    private String cardId;
     private int installment;
     private int amount;
 }

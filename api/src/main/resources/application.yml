@@ -25,6 +25,11 @@ spring:
       enabled: true
       path: /h2-console
 
+  redis:
+    connection:
+      host: localhost
+      port: 6379
+
 logging:
   level:
     root: INFO # 기본 레벨 (root 레벨)
@@ -32,6 +37,10 @@ logging:
 
 toss:
   clientKey: ${CLIENT_KEY}
-  secretKey: ${SECRET_KEY}
+  secretKey: ${SECRET_KEY} # 테스트용 실제 서비스에서는 DB에 저장
   securityKey: ${SECURITY_KEY}
   billingKeyUrl: "https://api.tosspayments.com/v1/billing/authorizations/issue"
+
+wiremock:
+  server:
+    port: 0

@@ -34,6 +34,11 @@ public class UserInfo extends BaseEntity{
     @Column(name = "useFlag")
     private Integer useFlag;
 
+    /** 가맹점에서 만든 Id */
+    private String merchantMemberId;
+
+    /** Toss 결제하기 위한 고객 Key */
+    private String customerKey;
 
     @OneToMany(mappedBy = "userInfo")
     private List<MyWalletInfo> myWalletInfos = new ArrayList<>();
