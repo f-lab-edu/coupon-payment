@@ -172,7 +172,7 @@ public class PaymentServiceTest {
         );
 
         //결제 상태가 존재하는 Mock
-        when(transactionInfoRepository.findByTranNumAndStatus("tranNum","DONE"))
+        when(transactionInfoRepository.findByTranNumAndStatus(paymentCancelReq.getTranNum(),"DONE"))
                 .thenReturn(Optional.of(transactionInfo));
 
         transactionInfo = transactionInfoRepository.findByTranNumAndStatus("tranNum","DONE").get();
