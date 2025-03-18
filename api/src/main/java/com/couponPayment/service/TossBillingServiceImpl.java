@@ -1,5 +1,6 @@
 package com.couponPayment.service;
 
+import com.couponPayment.config.TossCommonHeaderConfig;
 import com.couponPayment.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,28 +16,30 @@ public class TossBillingServiceImpl implements TossBillingService{
 
     private final ApiService<TossBillingPaymentRes> billingResApiService;
     private final ApiService<TossBillingPaymentCancelRes> billingPaymentCancelResApiService;
-
+    private final ApiService<TossBillingRes> getBillingResApiService;
     @Value("${toss.paymentUrl}")
     private String paymentUrl;
 
     @Value("${toss.paymentCancelUrl}")
     private String paymentCancelUrl;
 
+    @Value("${toss.billingKeyUrl}")
+    private String billingKeyUrl;
+
     @Override
     public TossBillingRes getBillingKey(TossBillingReq tossBillingReq) {
-        return null;
+
+        HttpHeaders headers = TossCommonHeaderConfig.tossHeader(tossBillingReq.getSecretKey());
+        TossBillingRes tossBillingRes = getBillingResApiService.post(billingKeyUrl, headers, TossBillingRes.class).getBody();
+
+        return tossBillingRes;
     }
 
     @Override
     public TossBillingPaymentRes billingPayment(TossBillingPaymentReq tossBillingPaymentReq) {
         String url = paymentUrl + tossBillingPaymentReq.getCardId();
-        String secretKey = tossBillingPaymentReq.getSecretKey();
 
-        String authHeader = "Basic " + Base64.getEncoder().encodeToString((secretKey + ":").getBytes());
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", authHeader);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
+        HttpHeaders headers = TossCommonHeaderConfig.tossHeader(tossBillingPaymentReq.getSecretKey());
         /** Todo
          * 서비스 -> 외부 API(토스)
          * 성공 실패, 에러에 따른 핸들링 필요
@@ -49,13 +52,8 @@ public class TossBillingServiceImpl implements TossBillingService{
     @Override
     public TossBillingPaymentCancelRes billingPaymentCancel(TossBillingPaymentCancelReq tossBillingPaymentCancelReq) {
         String url = paymentCancelUrl.replace("{paymentKey}", tossBillingPaymentCancelReq.getPaymentKey());
-        String secretKey = tossBillingPaymentCancelReq.getSecretKey();
 
-        String authHeader = "Basic " + Base64.getEncoder().encodeToString((secretKey + ":").getBytes());
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", authHeader);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
+        HttpHeaders headers = TossCommonHeaderConfig.tossHeader(tossBillingPaymentCancelReq.getSecretKey());
         /** Todo
          * 서비스 -> 외부 API(토스)
          * 성공 실패, 에러에 따른 핸들링 필요

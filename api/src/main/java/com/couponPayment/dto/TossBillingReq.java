@@ -13,5 +13,6 @@ import lombok.Setter;
 @Builder
 public class TossBillingReq {
     private String customerKey;
+    private String secretKey;
     private String authKey;
 }

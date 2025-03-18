@@ -1,5 +1,6 @@
 package com.couponPayment.service;
 
+import com.couponPayment.consts.CommonResult;
 import com.couponPayment.consts.PaymentStatus;
 import com.couponPayment.dto.*;
 import com.couponPayment.entity.MyWalletInfo;
@@ -111,6 +112,7 @@ public class PaymentServiceTest {
         //모킹으로 서비스 로직
         TossBillingPaymentRes.Card card = TossBillingPaymentRes.Card.builder()
                 .installmentPlanMonths(0)
+                .number("1234")
                 .approveNo("00000000")
                 .build();
 
@@ -135,6 +137,21 @@ public class PaymentServiceTest {
             transactionInfo.approvalPayment(tossBillingPaymentRes);
         }
 
+        PaymentRes paymentRes = PaymentRes
+                .builder()
+                .merchantId(paymentReq.getMerchantId())
+                .merchantMemberId(paymentReq.getMerchantMemberId())
+                .orderNum(paymentReq.getOrderNum())
+                .cardCompany(myWalletInfo.getCardCompany())
+                .cardNum(tossBillingPaymentRes.getCard().getNumber())
+                .approvalAmount(tossBillingPaymentRes.getCard().getAmount())
+                .approvalNum(tossBillingPaymentRes.getCard().getApproveNo())
+                .approvalDate(tossBillingPaymentRes.getApprovedAt())
+                .tranNum(tossBillingPaymentRes.getPaymentKey())
+                .resultCode(CommonResult.E0000.getCode())
+                .resultMessage(CommonResult.E0000.getMessage())
+                .build();
+        System.out.println(paymentRes.toString());
     }
 
     @Test
@@ -177,6 +194,10 @@ public class PaymentServiceTest {
 
         transactionInfo = transactionInfoRepository.findByTranNumAndStatus("tranNum","DONE").get();
 
+        if(!transactionInfo.getTranNum().equals(paymentCancelReq.getTranNum())){
+
+            return;
+        }
         /*when(storeInfoRepository.findByMerchantId("toss"))
                 .thenReturn(Optional.of(new StoreInfo(
                         null,"bbq","toss",null,null)));
@@ -235,5 +256,17 @@ public class PaymentServiceTest {
         if(tossBillingPaymentCancelRes.getCancels().get(0).getCancelStatus().equals(PaymentStatus.DONE.name())){
             cancelTransactionInfo.cancelPayment(tossBillingPaymentCancelRes);
         }
+
+        PaymentCancelRes paymentCancelRes = PaymentCancelRes
+                .builder()
+                .merchantId(storeInfo.getMerchantId())
+                .merchantMemberId(userInfo.getMerchantMemberId())
+                .tranNum(tossBillingPaymentCancelRes.getPaymentKey())
+                .orderNum(tossBillingPaymentCancelRes.getOrderName())
+                .cancelAmount(tossBillingPaymentCancelRes.getCancels().get(0).getCancelAmount())
+                .cancelDate(tossBillingPaymentCancelRes.getCancels().get(0).getCanceledAt())
+                .resultCode(CommonResult.E0000.getCode())
+                .resultMessage(CommonResult.E0000.getMessage())
+                .build();
     }
 }

@@ -32,11 +32,10 @@ public class PaymentController {
                 .orderNum("12345")
                 .cardCompany("NH")
                 .cardNum("123456789")
-                .cardName("농협 체크")
                 .approvalAmount(1000)
                 .approvalNum("A12345")
                 .approvalDate("20250302112233")
-                .paymentKey("txn_12345")
+                .tranNum("txn_12345")
                 .resultCode("0000")
                 .resultMessage("성공")
                 .build();

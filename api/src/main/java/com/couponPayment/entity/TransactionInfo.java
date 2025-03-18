@@ -79,4 +79,9 @@ public class TransactionInfo extends BaseEntity{
         this.cancelDt = tossBillingPaymentCancelRes.getCancels().get(0).getCanceledAt();
         this.status = tossBillingPaymentCancelRes.getCancels().get(0).getCancelStatus();
     }
+
+    public void cancelFail(){
+        this.status = PaymentStatus.FAIL.name();
+
+    }
 }

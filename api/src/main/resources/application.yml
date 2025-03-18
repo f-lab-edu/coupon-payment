@@ -40,6 +40,8 @@ toss:
   secretKey: ${SECRET_KEY} # 테스트용 실제 서비스에서는 DB에 저장
   securityKey: ${SECURITY_KEY}
   billingKeyUrl: "https://api.tosspayments.com/v1/billing/authorizations/issue"
+  paymentUrl: "https://api.tosspayments.com/v1/billing/"
+  paymentCancelUrl: "https://api.tosspayments.com/v1/payments/{paymentKey}/cancel"
 
 wiremock:
   server:

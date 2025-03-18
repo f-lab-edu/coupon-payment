@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public enum PaymentStatus {
-    DONE, CANCEL;
+    DONE, CANCEL, FAIL;
 }
