@@ -1,14 +1,11 @@
 package com.couponPayment.service;
 
-import com.couponPayment.config.TossCommonHeaderConfig;
+import com.couponPayment.util.TossCommonHeaderUtil;
 import com.couponPayment.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-
-import java.util.Base64;
 
 @RequiredArgsConstructor
 @Service
@@ -29,7 +26,7 @@ public class TossBillingServiceImpl implements TossBillingService{
     @Override
     public TossBillingRes getBillingKey(TossBillingReq tossBillingReq) {
 
-        HttpHeaders headers = TossCommonHeaderConfig.tossHeader(tossBillingReq.getSecretKey());
+        HttpHeaders headers = TossCommonHeaderUtil.tossHeader(tossBillingReq.getSecretKey());
         TossBillingRes tossBillingRes = getBillingResApiService.post(billingKeyUrl, headers, TossBillingRes.class).getBody();
 
         return tossBillingRes;
@@ -39,7 +36,7 @@ public class TossBillingServiceImpl implements TossBillingService{
     public TossBillingPaymentRes billingPayment(TossBillingPaymentReq tossBillingPaymentReq) {
         String url = paymentUrl + tossBillingPaymentReq.getCardId();
 
-        HttpHeaders headers = TossCommonHeaderConfig.tossHeader(tossBillingPaymentReq.getSecretKey());
+        HttpHeaders headers = TossCommonHeaderUtil.tossHeader(tossBillingPaymentReq.getSecretKey());
         /** Todo
          * 서비스 -> 외부 API(토스)
          * 성공 실패, 에러에 따른 핸들링 필요
@@ -53,7 +50,7 @@ public class TossBillingServiceImpl implements TossBillingService{
     public TossBillingPaymentCancelRes billingPaymentCancel(TossBillingPaymentCancelReq tossBillingPaymentCancelReq) {
         String url = paymentCancelUrl.replace("{paymentKey}", tossBillingPaymentCancelReq.getPaymentKey());
 
-        HttpHeaders headers = TossCommonHeaderConfig.tossHeader(tossBillingPaymentCancelReq.getSecretKey());
+        HttpHeaders headers = TossCommonHeaderUtil.tossHeader(tossBillingPaymentCancelReq.getSecretKey());
         /** Todo
          * 서비스 -> 외부 API(토스)
          * 성공 실패, 에러에 따른 핸들링 필요

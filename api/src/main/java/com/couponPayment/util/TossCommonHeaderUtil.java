@@ -1,11 +1,11 @@
-package com.couponPayment.config;
+package com.couponPayment.util;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import java.util.Base64;
 
-public class TossCommonHeaderConfig {
+public class TossCommonHeaderUtil {
 
     public static HttpHeaders tossHeader(String tossSecretKey) {
 

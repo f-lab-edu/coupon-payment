@@ -1,13 +1,12 @@
 package com.couponPayment.service;
 
-import com.couponPayment.config.TossCommonHeaderConfig;
+import com.couponPayment.util.TossCommonHeaderUtil;
 import com.couponPayment.dto.TossBillingPaymentCancelReq;
 import com.couponPayment.dto.TossBillingPaymentCancelRes;
 import com.couponPayment.dto.TossBillingPaymentReq;
 import com.couponPayment.dto.TossBillingPaymentRes;
 import com.couponPayment.dto.TossBillingReq;
 import com.couponPayment.dto.TossBillingRes;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,10 +15,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
-import java.util.Base64;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TossBillingServiceTest {
@@ -49,7 +45,7 @@ class TossBillingServiceTest {
         // Authorization에 사용될 시크릿 키
         String secretKey = secretTossKey;
 
-        HttpHeaders headers = TossCommonHeaderConfig.tossHeader(secretKey);
+        HttpHeaders headers = TossCommonHeaderUtil.tossHeader(secretKey);
         // HttpEntity를 통해 요청 본문과 헤더를 설정
         HttpEntity<TossBillingReq> entity = new HttpEntity<>(tossBillingReq, headers);
 
@@ -86,7 +82,7 @@ class TossBillingServiceTest {
         // Authorization에 사용될 시크릿 키
         String secretKey = secretTossKey;
 
-        HttpHeaders headers = TossCommonHeaderConfig.tossHeader(secretKey);
+        HttpHeaders headers = TossCommonHeaderUtil.tossHeader(secretKey);
 
         // HttpEntity를 통해 요청 본문과 헤더를 설정
         HttpEntity<TossBillingPaymentReq> entity = new HttpEntity<>(tossBillingPaymentReq, headers);
@@ -116,7 +112,7 @@ class TossBillingServiceTest {
         String secretKey = secretTossKey;
 
         // Basic 인증 헤더 생성 (secretKey: 뒤에 :을 붙여서 base64로 인코딩)
-        HttpHeaders headers = TossCommonHeaderConfig.tossHeader(secretKey);
+        HttpHeaders headers = TossCommonHeaderUtil.tossHeader(secretKey);
         // HttpEntity를 통해 요청 본문과 헤더를 설정
         HttpEntity<TossBillingPaymentCancelReq> entity = new HttpEntity<>(tossBillingPaymentCancelReq, headers);
 

@@ -1,6 +1,9 @@
 package com.couponPayment.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -13,10 +16,11 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 
 @Configuration
 @EnableRedisRepositories
+@ConfigurationProperties(prefix = "spring.redis.connection")
+@Setter
+@Getter
 public class RedisConfig {
-    @Value("${spring.redis.connection.host}")
     private String host;
-    @Value("${spring.redis.connection.port}")
     private int port;
 
     @Bean
@@ -37,8 +41,8 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<?, ?> redisTemplate() {
-        RedisTemplate<?, ?> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate<String, ?> redisTemplate() {
+        RedisTemplate<String, ?> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         return redisTemplate;
     }
