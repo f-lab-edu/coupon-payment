@@ -1,6 +1,8 @@
 package com.couponPayment.controller;
 
+import com.couponPayment.consts.CommonResult;
 import com.couponPayment.consts.PaymentStatus;
+import com.couponPayment.dto.ApiResponse;
 import com.couponPayment.dto.PaymentCancelReq;
 import com.couponPayment.dto.PaymentCancelRes;
 import com.couponPayment.dto.PaymentHistoryReq;
@@ -24,9 +26,9 @@ public class PaymentController {
     private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
     @PostMapping
-    public ResponseEntity<PaymentRes> payment(@RequestBody PaymentReq paymentReq){
+    public ResponseEntity<ApiResponse<PaymentRes>> payment(@RequestBody PaymentReq paymentReq){
 
-        PaymentRes paymentRes = PaymentRes.builder()
+        /*PaymentRes paymentRes = PaymentRes.builder()
                 .merchantId("가맹점")
                 .merchantMemberId("young")
                 .orderNum("12345")
@@ -38,14 +40,15 @@ public class PaymentController {
                 .tranNum("txn_12345")
                 .resultCode("0000")
                 .resultMessage("성공")
-                .build();
-
-        return ResponseEntity.ok(paymentRes);
+                .build();*/
+        PaymentRes paymentRes = new PaymentRes("가맹점","young","12345","NH","123",1000,"aNum","adt","tran");
+        ApiResponse<PaymentRes> apiResponse =  ApiResponse.of(CommonResult.E0000, paymentRes);
+        return ResponseEntity.ok(apiResponse);
     }
 
     @PostMapping("/cancel")
-    public ResponseEntity<PaymentCancelRes> paymentCancel(@RequestBody PaymentCancelReq paymentCancelReq){
-        PaymentCancelRes paymentCancelRes = PaymentCancelRes
+    public ResponseEntity<ApiResponse<PaymentCancelRes>> paymentCancel(@RequestBody PaymentCancelReq paymentCancelReq){
+        /*PaymentCancelRes paymentCancelRes = PaymentCancelRes
                 .builder()
                 .merchantId("가맹점")
                 .merchantMemberId("young")
@@ -54,13 +57,16 @@ public class PaymentController {
                 .cancelDate("20250302112233")
                 .resultCode("0000")
                 .resultMessage("성공")
-                .build();
-        return ResponseEntity.ok(paymentCancelRes);
+                .build();*/
+        logger.info(paymentCancelReq.toString());
+        PaymentCancelRes paymentCancelRes = new PaymentCancelRes("가맹점","young","12345","orderNum",1000,"20250321");
+        ApiResponse<PaymentCancelRes> apiResponse =  ApiResponse.of(CommonResult.E0000, paymentCancelRes);
+        return ResponseEntity.ok(apiResponse);
     }
 
     @PostMapping("/history")
-    public ResponseEntity<PaymentHistoryRes> paymentCancel(@RequestBody PaymentHistoryReq paymentHistoryReq){
-        List<PaymentHistoryRes.Payments> payments = new ArrayList<>();
+    public ResponseEntity<ApiResponse<PaymentHistoryRes>> paymentHistory(@RequestBody PaymentHistoryReq paymentHistoryReq){
+        /*List<PaymentHistoryRes.Payments> payments = new ArrayList<>();
         PaymentHistoryRes.Payments payments1 = PaymentHistoryRes.Payments
                 .builder()
                 .amount(1000)
@@ -84,8 +90,17 @@ public class PaymentController {
                 .merchantId("가맹점")
                 .merchantMemberId("young")
                 .payments(payments)
-                .build();
+                .build();*/
 
-        return ResponseEntity.ok(paymentHistoryRes);
+        List<PaymentHistoryRes.Payments> payments = new ArrayList<>();
+        PaymentHistoryRes.Payments payments1 = new PaymentHistoryRes.Payments("12345",1000,PaymentStatus.DONE, "20250302112233");
+        PaymentHistoryRes.Payments payments2 = new PaymentHistoryRes.Payments("123456",500,PaymentStatus.CANCEL, "20250302112244");
+
+        payments.add(payments1);
+        payments.add(payments2);
+
+        PaymentHistoryRes paymentHistoryRes = new PaymentHistoryRes("가맹점", "young", payments);
+        ApiResponse<PaymentHistoryRes> apiResponse =  ApiResponse.of(CommonResult.E0000, paymentHistoryRes);
+        return ResponseEntity.ok(apiResponse);
     }
 }

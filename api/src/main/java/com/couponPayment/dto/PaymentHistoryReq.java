@@ -2,12 +2,10 @@ package com.couponPayment.dto;
 
 import lombok.*;
 
-@NoArgsConstructor
 @AllArgsConstructor
-@Setter
+@NoArgsConstructor(force = true) //force = true를 사용하여 final 필드에 null 값 허용
 @Getter
-@Builder
 public class PaymentHistoryReq {
-    private String merchantId;
-    private String merchantMemberId;
+    private final String merchantId;
+    private final String merchantMemberId;
 }

@@ -1,15 +1,21 @@
 package com.couponPayment.entity;
 
-import com.couponPayment.consts.PaymentStatus;
-import com.couponPayment.dto.TossBillingPaymentCancelRes;
-import com.couponPayment.dto.TossBillingPaymentRes;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
 @Entity
+@Setter
 public class TransactionInfo extends BaseEntity{
     @Id
     @Column(name = "transactionInfoId")
@@ -65,7 +71,7 @@ public class TransactionInfo extends BaseEntity{
 
     }
 
-    public void approvalPayment(TossBillingPaymentRes tossBillingPaymentRes){
+    /*public void approvalPayment(TossBillingPaymentRes tossBillingPaymentRes){
         this.tranNum = tossBillingPaymentRes.getPaymentKey();
         this.approvalAmount = tossBillingPaymentRes.getTotalAmount();
         this.approvalDt = tossBillingPaymentRes.getApprovedAt();
@@ -82,6 +88,5 @@ public class TransactionInfo extends BaseEntity{
 
     public void cancelFail(){
         this.status = PaymentStatus.FAIL.name();
-
-    }
+    }*/
 }

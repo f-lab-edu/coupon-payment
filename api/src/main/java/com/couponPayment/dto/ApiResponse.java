@@ -3,32 +3,40 @@ package com.couponPayment.dto;
 import com.couponPayment.consts.CommonResult;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
+import lombok.ToString;
 
-@Setter
 @Getter
-@SuperBuilder
-public class ApiResponse {
+@ToString
+public class ApiResponse<T> {
     public static final ApiResponse OK = new ApiResponse();
 
-    private String resultCode;
-    private String resultMessage;
+    private final String resultCode;
+    private final String resultMessage;
+    private final T data;
 
-    public ApiResponse() {
+    private ApiResponse() {
         this(CommonResult.E0000);
     }
 
-    public ApiResponse(CommonResult commonResult) {
-        resultCode = commonResult.getCode();
-        resultMessage = commonResult.getMessage();
+    private ApiResponse(CommonResult commonResult) {
+        this(commonResult.getCode(), commonResult.getMessage(), null);
     }
 
-    public ApiResponse(String resultCode, String resultMsg) {
+    private ApiResponse(CommonResult commonResult, T data) {
+        this(commonResult.getCode(), commonResult.getMessage(), data);
+    }
+
+    private ApiResponse(String resultCode, String resultMsg, T data) {
         this.resultCode = resultCode;
         this.resultMessage = resultMsg;
+        this.data = data;
     }
 
-    public static ApiResponse of(CommonResult commonResult) {
+    public static ApiResponse fail(CommonResult commonResult) {
         return new ApiResponse(commonResult);
+    }
+
+    public static <T> ApiResponse<T> of(CommonResult commonResult, T data) {
+        return new ApiResponse<>(commonResult.getCode(), commonResult.getMessage(), data);
     }
 }

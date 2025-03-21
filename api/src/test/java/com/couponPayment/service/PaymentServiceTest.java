@@ -2,7 +2,15 @@ package com.couponPayment.service;
 
 import com.couponPayment.consts.CommonResult;
 import com.couponPayment.consts.PaymentStatus;
-import com.couponPayment.dto.*;
+import com.couponPayment.dto.ApiResponse;
+import com.couponPayment.dto.PaymentCancelReq;
+import com.couponPayment.dto.PaymentCancelRes;
+import com.couponPayment.dto.PaymentReq;
+import com.couponPayment.dto.PaymentRes;
+import com.couponPayment.dto.TossBillingPaymentCancelReq;
+import com.couponPayment.dto.TossBillingPaymentCancelRes;
+import com.couponPayment.dto.TossBillingPaymentReq;
+import com.couponPayment.dto.TossBillingPaymentRes;
 import com.couponPayment.entity.MyWalletInfo;
 import com.couponPayment.entity.StoreInfo;
 import com.couponPayment.entity.TransactionInfo;
@@ -12,17 +20,12 @@ import com.couponPayment.entity.mapper.TransactionMapper;
 import com.couponPayment.repository.MyWalletInfoRepository;
 import com.couponPayment.repository.StoreInfoRepository;
 import com.couponPayment.repository.TransactionInfoRepository;
-import com.couponPayment.repository.UserInfoRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -50,7 +53,7 @@ public class PaymentServiceTest {
 
     @Test
     public void payment() {
-        PaymentReq paymentReq = PaymentReq
+        /*PaymentReq paymentReq = PaymentReq
                 .builder()
                 .merchantId("bbq")
                 .merchantMemberId("young")
@@ -59,8 +62,8 @@ public class PaymentServiceTest {
                 .installment(0)
                 .cardId("BillingKey")
                 .amount(2000)
-                .build();
-
+                .build();*/
+        PaymentReq paymentReq = new PaymentReq("bbq", "young", "orderNum", "orderId1", "BillingKey", 0, 2000);
         StoreInfo storeInfo = new StoreInfo(
                 1L, "bbq", "toss", null, null);
         UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, "young",
@@ -69,7 +72,7 @@ public class PaymentServiceTest {
         /*MyWalletInfo myWalletInfo = myWalletInfoRepository.findById(1L).get();
         myWalletInfo.getUserInfo().getStoreInfo().getTossPaymentId();*/
         when(myWalletInfoRepository.findByCardIdAndUseFlag("cardId", 0))
-                .thenReturn(Optional.of(new MyWalletInfo(2L, userInfo, "cardId", "NH", "123", "1", "5", "2", "3", "4", 0, null)));
+                .thenReturn(Optional.of(new MyWalletInfo(2L, userInfo, "cardId", "NH", "123", "1", "5", "3", "4", 0, null)));
 
         /**요청 온 카드정보 찾기 및 검증
          * ex) 체크카드인데 신용
@@ -110,22 +113,47 @@ public class PaymentServiceTest {
                 .build();
 
         //모킹으로 서비스 로직
-        TossBillingPaymentRes.Card card = TossBillingPaymentRes.Card.builder()
+        /*TossBillingPaymentRes.Card card = TossBillingPaymentRes.Card.builder()
                 .installmentPlanMonths(0)
                 .number("1234")
                 .approveNo("00000000")
                 .build();
+*/
+        TossBillingPaymentRes.Card card = new TossBillingPaymentRes.Card("company", "issueCd", "acCd", "number", 0, false, "payer", "apNo", false, "cdType"
+                , "ownerType", "acStatus", "reUrl", "provider", 1000);
 
         when(tossBillingService.billingPayment(tossBillingPaymentReq)).thenReturn(
-                TossBillingPaymentRes
-                        .builder()
-                        .paymentKey("결제 키 값")
-                        .requestedAt("요청 시간")
-                        .totalAmount(1000)
-                        .status("DONE")
-                        .approvedAt("승인 시간")
-                        .card(card)
-                        .build()
+                new TossBillingPaymentRes(
+                        "MID123456",
+                        "LTK123456",
+                        "PK123456",
+                        "ORDER123456",
+                        "Test Order",
+                        0,
+                        "DONE",
+                        "2025-03-20T12:00:00",
+                        "2025-03-20T12:05:00",
+                        false,
+                        false,
+                        "CARD",
+                        "KR",
+                        true,
+                        "TK123456",
+                        "KRW",
+                        100000,
+                        50000,
+                        90000,
+                        10000,
+                        0,
+                        "CreditCard",
+                        "1.0",
+                        new TossBillingPaymentRes.Receipt("https://test-receipt.com"),
+                        new TossBillingPaymentRes.Checkout("https://test-checkout.com"),
+                        card,
+                        new TossBillingPaymentRes.Failure("ERROR123", "Transaction Failed"),
+                        "200",
+                        "Success"
+                )
         );
 
         //결제 성공 로직
@@ -134,10 +162,15 @@ public class PaymentServiceTest {
 
         //결제 성공
         if (tossBillingPaymentRes.getStatus().equals(PaymentStatus.DONE.name())) {
-            transactionInfo.approvalPayment(tossBillingPaymentRes);
+            transactionInfo.setTranNum(tossBillingPaymentRes.getPaymentKey());
+            transactionInfo.setApprovalAmount(tossBillingPaymentRes.getTotalAmount());
+            transactionInfo.setApprovalDt(tossBillingPaymentRes.getApprovedAt());
+            transactionInfo.setApprovalNum(tossBillingPaymentRes.getCard().getApproveNo());
+            transactionInfo.setInstallment(tossBillingPaymentRes.getCard().getInstallmentPlanMonths());
+            transactionInfo.setStatus(tossBillingPaymentRes.getStatus());
         }
 
-        PaymentRes paymentRes = PaymentRes
+        /*PaymentRes paymentRes = PaymentRes
                 .builder()
                 .merchantId(paymentReq.getMerchantId())
                 .merchantMemberId(paymentReq.getMerchantMemberId())
@@ -150,24 +183,32 @@ public class PaymentServiceTest {
                 .tranNum(tossBillingPaymentRes.getPaymentKey())
                 .resultCode(CommonResult.E0000.getCode())
                 .resultMessage(CommonResult.E0000.getMessage())
-                .build();
-        System.out.println(paymentRes.toString());
+                .build();*/
+
+        PaymentRes paymentRes = new PaymentRes(
+                paymentReq.getMerchantId(),
+                paymentReq.getMerchantMemberId(),
+                paymentReq.getOrderNum(),
+                myWalletInfo.getCardCompany(),
+                tossBillingPaymentRes.getCard().getNumber(),
+                tossBillingPaymentRes.getCard().getAmount(),
+                tossBillingPaymentRes.getCard().getApproveNo(),
+                tossBillingPaymentRes.getApprovedAt(),
+                tossBillingPaymentRes.getPaymentKey()
+                );
+        ApiResponse.of(CommonResult.E0000, paymentRes);
+        System.out.println(ApiResponse.of(CommonResult.E0000, paymentRes));
     }
 
     @Test
     public void paymentCancel() {
-        PaymentCancelReq paymentCancelReq = PaymentCancelReq
-                .builder()
-                .merchantId("bbq")
-                .merchantMemberId("young")
-                .tranNum("tranNum")
-                .build();
+        PaymentCancelReq paymentCancelReq = new PaymentCancelReq("bbq", "young", "tranNum");
 
         StoreInfo storeInfo = new StoreInfo(
                 1L, "bbq", "toss", null, null);
         UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, "young",
                 "1234", null, null);
-        MyWalletInfo myWalletInfo = new MyWalletInfo(2L, userInfo, "cardId", "NH", "123", "1", "5", "2", "3", "4", 0, null);
+        MyWalletInfo myWalletInfo = new MyWalletInfo(2L, userInfo, "cardId", "NH", "123", "1", "5", "3", "4", 0, null);
 
         TransactionInfo transactionInfo = new TransactionInfo(
                 null,                      // id (초기 저장 시 null)
@@ -189,12 +230,12 @@ public class PaymentServiceTest {
         );
 
         //결제 상태가 존재하는 Mock
-        when(transactionInfoRepository.findByTranNumAndStatus(paymentCancelReq.getTranNum(),"DONE"))
+        when(transactionInfoRepository.findByTranNumAndStatus(paymentCancelReq.getTranNum(), "DONE"))
                 .thenReturn(Optional.of(transactionInfo));
 
-        transactionInfo = transactionInfoRepository.findByTranNumAndStatus("tranNum","DONE").get();
+        transactionInfo = transactionInfoRepository.findByTranNumAndStatus("tranNum", "DONE").get();
 
-        if(!transactionInfo.getTranNum().equals(paymentCancelReq.getTranNum())){
+        if (!transactionInfo.getTranNum().equals(paymentCancelReq.getTranNum())) {
 
             return;
         }
@@ -223,29 +264,34 @@ public class PaymentServiceTest {
 
         TransactionInfo cancelTransactionInfo = transactionInfoRepository.save(transactionMapper.toEntity(transactionInfoDto));
 
-
-        TossBillingPaymentCancelReq tossBillingPaymentCancelReq = TossBillingPaymentCancelReq
+        /*TossBillingPaymentCancelReq tossBillingPaymentCancelReq = TossBillingPaymentCancelReq
                 .builder()
                 .paymentKey(transactionInfo.getTranNum())
                 .secretKey(storeInfo.getTossPaymentId())
                 .cancelReason("취소 이유")
-                .build();
+                .build();*/
+        TossBillingPaymentCancelReq tossBillingPaymentCancelReq = new TossBillingPaymentCancelReq(transactionInfo.getTranNum(),"취소 이유",storeInfo.getTossPaymentId());
 
         List<TossBillingPaymentCancelRes.Cancels> cancels = new ArrayList<>();
-        TossBillingPaymentCancelRes.Cancels cancel = TossBillingPaymentCancelRes.Cancels
-                .builder()
-                .canceledAt("2024-02-13T12:20:23+09:00")
-                .cancelAmount(1000)
-                .cancelStatus("DONE")
-                .build();
+        TossBillingPaymentCancelRes.Cancels cancel = new TossBillingPaymentCancelRes.Cancels(
+                "TK123456",
+                "Customer Request",
+                0,
+                "2024-02-13T12:20:23+09:00",
+                500,
+                200,
+                "RECEIPT123",
+                "DONE",
+                "REQ123456",
+                1000,
+                0,
+                800
+        );
         cancels.add(cancel);
 
         when(tossBillingService.billingPaymentCancel(tossBillingPaymentCancelReq))
                 .thenReturn(
-                        TossBillingPaymentCancelRes
-                                .builder()
-                                .cancels(cancels)
-                                .build()
+                        new TossBillingPaymentCancelRes(cancels)
                 );
 
         //결제 취소 성공 로직
@@ -253,11 +299,13 @@ public class PaymentServiceTest {
                 tossBillingService.billingPaymentCancel(tossBillingPaymentCancelReq);
 
         //분할 취소를 위해 list로 있지만 내 서비스에 분할 취소는 없다
-        if(tossBillingPaymentCancelRes.getCancels().get(0).getCancelStatus().equals(PaymentStatus.DONE.name())){
-            cancelTransactionInfo.cancelPayment(tossBillingPaymentCancelRes);
+        if (tossBillingPaymentCancelRes.getCancels().get(0).getCancelStatus().equals(PaymentStatus.DONE.name())) {
+            cancelTransactionInfo.setCancelAmount(tossBillingPaymentCancelRes.getCancels().get(0).getCancelAmount());
+            cancelTransactionInfo.setCancelDt(tossBillingPaymentCancelRes.getCancels().get(0).getCanceledAt());
+            cancelTransactionInfo.setStatus(tossBillingPaymentCancelRes.getCancels().get(0).getCancelStatus());
         }
 
-        PaymentCancelRes paymentCancelRes = PaymentCancelRes
+        /*PaymentCancelRes paymentCancelRes = PaymentCancelRes
                 .builder()
                 .merchantId(storeInfo.getMerchantId())
                 .merchantMemberId(userInfo.getMerchantMemberId())
@@ -267,6 +315,17 @@ public class PaymentServiceTest {
                 .cancelDate(tossBillingPaymentCancelRes.getCancels().get(0).getCanceledAt())
                 .resultCode(CommonResult.E0000.getCode())
                 .resultMessage(CommonResult.E0000.getMessage())
-                .build();
+                .build();*/
+        PaymentCancelRes paymentCancelRes = new PaymentCancelRes(
+                storeInfo.getMerchantId(),
+                userInfo.getMerchantMemberId(),
+                tossBillingPaymentCancelRes.getPaymentKey(),
+                tossBillingPaymentCancelRes.getOrderName(),
+                tossBillingPaymentCancelRes.getCancels().get(0).getCancelAmount(),
+                tossBillingPaymentCancelRes.getCancels().get(0).getCanceledAt()
+        );
+
+        ApiResponse.of(CommonResult.E0000, paymentCancelRes);
+        System.out.println(ApiResponse.of(CommonResult.E0000, paymentCancelRes));
     }
 }

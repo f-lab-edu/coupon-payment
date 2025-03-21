@@ -2,18 +2,14 @@ package com.couponPayment.dto;
 
 import lombok.*;
 
-@NoArgsConstructor
 @AllArgsConstructor
-@Setter
+@NoArgsConstructor(force = true) //force = true를 사용하여 final 필드에 null 값 허용
 @Getter
-@Builder
-public class PaymentCancelRes {
-    private String merchantId; //가맹점 Id
-    private String merchantMemberId; //회원 Id
-    private String tranNum; //거래번호
-    private String orderNum;
-    private int cancelAmount;
-    private String cancelDate;
-    private String resultCode;
-    private String resultMessage;
+public class PaymentCancelRes{
+    private final String merchantId; //가맹점 Id
+    private final String merchantMemberId; //회원 Id
+    private final String tranNum; //거래번호
+    private final String orderNum;
+    private final int cancelAmount;
+    private final String cancelDate;
 }

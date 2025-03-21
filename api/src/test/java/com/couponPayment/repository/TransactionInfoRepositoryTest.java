@@ -102,10 +102,10 @@ class TransactionInfoRepositoryTest {
                 null,
                 null,
                 null,
-                "tranNum",
+                "PK123456",
                 "2025-03-10T09:23:27+09:00",
                 1000,
-                1000,
+                100000,
                 "2025-03-10T09:23:27+09:00",
                 "approvalNum",
                 1000,
@@ -116,24 +116,53 @@ class TransactionInfoRepositoryTest {
         );
         transactionInfoRepository.save(transactionInfo);
 
-        TossBillingPaymentRes.Card card = TossBillingPaymentRes.Card.builder()
+        /*TossBillingPaymentRes.Card card = TossBillingPaymentRes.Card.builder()
                 .installmentPlanMonths(1)
                 .approveNo("00000000")
-                .build();
+                .build();*/
+        TossBillingPaymentRes.Card card = new TossBillingPaymentRes.Card("company", "issueCd", "acCd", "number", 0, false, "payer", "apNo", false, "cdType"
+                , "ownerType", "acStatus", "reUrl", "provider", 1000);
 
 
-        TossBillingPaymentRes tossBillingPaymentRes =
-                TossBillingPaymentRes
-                        .builder()
-                        .paymentKey("결제 키 값")
-                        .requestedAt("요청 시간")
-                        .totalAmount(1000)
-                        .status("DONE")
-                        .approvedAt("승인 시간")
-                        .card(card)
-                        .build();
+        TossBillingPaymentRes tossBillingPaymentRes = new TossBillingPaymentRes(
+                "MID123456",
+                "LTK123456",
+                "PK123456",
+                "ORDER123456",
+                "Test Order",
+                0,
+                "DONE",
+                "2025-03-20T12:00:00",
+                "2025-03-20T12:05:00",
+                false,
+                false,
+                "CARD",
+                "KR",
+                true,
+                "TK123456",
+                "KRW",
+                100000,
+                50000,
+                90000,
+                10000,
+                0,
+                "CreditCard",
+                "1.0",
+                new TossBillingPaymentRes.Receipt("https://test-receipt.com"),
+                new TossBillingPaymentRes.Checkout("https://test-checkout.com"),
+                card,
+                new TossBillingPaymentRes.Failure("ERROR123", "Transaction Failed"),
+                "200",
+                "Success"
+        );
 
-        transactionInfo.approvalPayment(tossBillingPaymentRes);
+        //transactionInfo.approvalPayment(tossBillingPaymentRes);
+        transactionInfo.setTranNum(tossBillingPaymentRes.getPaymentKey());
+        transactionInfo.setApprovalAmount(tossBillingPaymentRes.getTotalAmount());
+        transactionInfo.setApprovalDt(tossBillingPaymentRes.getApprovedAt());
+        transactionInfo.setApprovalNum(tossBillingPaymentRes.getCard().getApproveNo());
+        transactionInfo.setInstallment(tossBillingPaymentRes.getCard().getInstallmentPlanMonths());
+        transactionInfo.setStatus(tossBillingPaymentRes.getStatus());
 
         assertThat(transactionInfo.getInstallment()).isEqualTo(tossBillingPaymentRes.getCard().getInstallmentPlanMonths());
         assertThat(transactionInfo.getApprovalNum()).isEqualTo(tossBillingPaymentRes.getCard().getApproveNo());
@@ -166,20 +195,39 @@ class TransactionInfoRepositoryTest {
         transactionInfoRepository.save(transactionInfo);
 
         List<TossBillingPaymentCancelRes.Cancels> cancels = new ArrayList<>();
-        TossBillingPaymentCancelRes.Cancels cancel = TossBillingPaymentCancelRes.Cancels
+        /*TossBillingPaymentCancelRes.Cancels cancel = TossBillingPaymentCancelRes.Cancels
                 .builder()
                 .canceledAt("2024-02-13T12:20:23+09:00")
                 .cancelAmount(1000)
                 .cancelStatus("DONE")
-                .build();
+                .build();*/
+
+        TossBillingPaymentCancelRes.Cancels cancel = new TossBillingPaymentCancelRes.Cancels(
+                "TK123456",
+                "Customer Request",
+                0,
+                "2024-02-13T12:20:23+09:00",
+                500,
+                200,
+                "RECEIPT123",
+                "DONE",
+                "REQ123456",
+                1000,
+                0,
+                800
+        );
+
         cancels.add(cancel);
 
-        TossBillingPaymentCancelRes tossBillingPaymentRes = TossBillingPaymentCancelRes
+        /*TossBillingPaymentCancelRes tossBillingPaymentRes = TossBillingPaymentCancelRes
                 .builder()
                 .cancels(cancels)
-                .build();
+                .build();*/
+        TossBillingPaymentCancelRes tossBillingPaymentCancelRes = new TossBillingPaymentCancelRes(cancels);
 
-        transactionInfo.cancelPayment(tossBillingPaymentRes);
+        transactionInfo.setCancelAmount(tossBillingPaymentCancelRes.getCancels().get(0).getCancelAmount());
+        transactionInfo.setCancelDt(tossBillingPaymentCancelRes.getCancels().get(0).getCanceledAt());
+        transactionInfo.setStatus(tossBillingPaymentCancelRes.getCancels().get(0).getCancelStatus());
 
         assertThat(transactionInfo.getCancelDt().equals(cancel.getCanceledAt()));
         assertThat(transactionInfo.getCancelAmount().equals(cancel.getCancelAmount()));

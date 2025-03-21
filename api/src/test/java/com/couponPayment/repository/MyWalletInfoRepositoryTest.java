@@ -26,7 +26,7 @@ class MyWalletInfoRepositoryTest {
 
     @Test
     public void save() {
-        MyWalletInfo myWalletInfo = new MyWalletInfo(null, null, "cardId", "NH", "123", "1", "5", "2", "3", "4", 0,null);
+        MyWalletInfo myWalletInfo = new MyWalletInfo(null, null, "cardId", "NH", "123", "1", "5",  "3", "4", 0,null);
         myWalletInfoRepository.save(myWalletInfo);
 
         assertThat(myWalletInfo.getId()).isEqualTo(1L);
@@ -37,7 +37,7 @@ class MyWalletInfoRepositoryTest {
 
     @Test
     public void findById() {
-        MyWalletInfo myWalletInfo = new MyWalletInfo(null, null, "cardId", "NH", "123", "1", "5", "2", "3", "4", 0,null);
+        MyWalletInfo myWalletInfo = new MyWalletInfo(null, null, "cardId", "NH", "123", "1", "5",  "3", "4", 0,null);
         myWalletInfoRepository.save(myWalletInfo);
 
         myWalletInfo = myWalletInfoRepository.findById(1L).get();
@@ -50,7 +50,7 @@ class MyWalletInfoRepositoryTest {
 
     @Test
     public void findByCardIdAndUseFlag(){
-        MyWalletInfo myWalletInfo = new MyWalletInfo(null, null, "cardId", "NH", "123", "1", "5", "2", "3", "4", 0,null);
+        MyWalletInfo myWalletInfo = new MyWalletInfo(null, null, "cardId", "NH", "123", "1", "5",  "3", "4", 0,null);
         myWalletInfoRepository.save(myWalletInfo);
 
         myWalletInfo = myWalletInfoRepository.findByCardIdAndUseFlag("cardId", 0).get();

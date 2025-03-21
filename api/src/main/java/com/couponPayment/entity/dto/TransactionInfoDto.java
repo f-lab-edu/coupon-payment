@@ -16,6 +16,10 @@ import java.sql.Timestamp;
 @Setter
 @Builder
 @ToString
+/**
+ * TransactionInfo는 값이 변하는 경우가 많아
+ * build 패턴을 사용하여 원하는 파라미터만 변경하여 적용 예정
+ * */
 public class TransactionInfoDto {
     /** 이 값으로 거래 취소 */
     private String tranNum;

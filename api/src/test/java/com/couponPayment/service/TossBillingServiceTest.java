@@ -35,13 +35,13 @@ class TossBillingServiceTest {
         //sucess요청이 올때마다 값이 달라지는데 어떻게 테스트 코드를 짜야할까?....
 
         System.out.println(secretTossKey);
-        TossBillingReq tossBillingReq = TossBillingReq
+        /*TossBillingReq tossBillingReq = TossBillingReq
                 .builder()
                 .customerKey("Y5zNpssBs1")
                 .secretKey(secretTossKey)
                 .authKey("bln_5KnkWkREXW1")
-                .build();
-
+                .build();*/
+        TossBillingReq tossBillingReq = new TossBillingReq("Y5zNpssBs1", secretTossKey, "bln_5KnkWkREXW1");
         // Authorization에 사용될 시크릿 키
         String secretKey = secretTossKey;
 
@@ -100,16 +100,18 @@ class TossBillingServiceTest {
     @Test
     public void paymentCancel(){
 
-        TossBillingPaymentCancelReq tossBillingPaymentCancelReq = TossBillingPaymentCancelReq
+        /*TossBillingPaymentCancelReq tossBillingPaymentCancelReq = TossBillingPaymentCancelReq
                 .builder()
                 .paymentKey("tviva20250311153221DLaG0")
                 .cancelReason("취소 이유")
-                .build();
+                .build();*/
         //
+        String secretKey = secretTossKey;
+        TossBillingPaymentCancelReq tossBillingPaymentCancelReq = new TossBillingPaymentCancelReq("tviva20250311153221DLaG0","취소 이유",secretKey);
         String url = paymentCancelUrl.replace("{paymentKey}", tossBillingPaymentCancelReq.getPaymentKey());
 
         // Authorization에 사용될 시크릿 키
-        String secretKey = secretTossKey;
+
 
         // Basic 인증 헤더 생성 (secretKey: 뒤에 :을 붙여서 base64로 인코딩)
         HttpHeaders headers = TossCommonHeaderUtil.tossHeader(secretKey);

@@ -7,21 +7,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
-@Setter
-@Builder
+@AllArgsConstructor
 @ToString
 public class MyWalletInfoDto {
-    private String cardId;
-    private String cardCompany;
-    private String cardNumber;
-    private String issuerCode;
-    private String acquirerCode;
-    private String number;
-    private String cardType;
-    private String ownerType;
+    private final String cardId;
+    private final String cardCompany;
+    private final String cardNumber;
+    private final String issuerCode;
+    private final String acquirerCode;
+    private final String cardType;
+    private final String ownerType;
 
-    private Long userInfoId;
+    private final Long userInfoId;
 }

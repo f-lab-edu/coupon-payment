@@ -77,11 +77,7 @@ public class MapperTest {
     @Test
     @DisplayName("StoreInfo Mapper DtoToEntity")
     public void storeInfo_Mapper_DtoToEntity() {
-        StoreInfoDto storeInfoDto = StoreInfoDto
-                .builder()
-                .merchantId("bbq")
-                .tossPaymentId("toss")
-                .build();
+        StoreInfoDto storeInfoDto = new StoreInfoDto("bbq", "toss");
         StoreInfo storeInfo = storeInfoMapper.toEntity(storeInfoDto);
 
         assertThat(storeInfoDto)
@@ -94,7 +90,7 @@ public class MapperTest {
     public void UserInfo_Mapper_EntityToDto() {
         StoreInfo storeInfo = new StoreInfo(1L, "bbq", "toss", null, null);
 
-        UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, "young","1234",null, null);
+        UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, "young", "1234", null, null);
         UserInfoDto userInfoDto = userInfoMapper.toDto(userInfo);
 
         assertThat(userInfoDto)
@@ -109,14 +105,15 @@ public class MapperTest {
     @Test
     @DisplayName("UserInfo Mapper DtoToEntity")
     public void UserInfo_Mapper_DtoToEntity() {
-        UserInfoDto userInfoDto = UserInfoDto
+        /*UserInfoDto userInfoDto = UserInfoDto
                 .builder()
                 .name("young")
                 .phone("010")
                 .mail("naver.com")
                 .useFlag(0)
                 .storeInfoId(1L)
-                .build();
+                .build();*/
+        UserInfoDto userInfoDto = new UserInfoDto("young", "010", "naver.com",0,1L);
         UserInfo userInfo = userInfoMapper.toEntity(userInfoDto);
 
         assertThat(userInfoDto)
@@ -131,9 +128,9 @@ public class MapperTest {
     @Test
     @DisplayName("MyWalletInfo Mapper EntityToDto")
     public void MyWalletInfo_Mapper_EntityToDto() {
-        UserInfo userInfo = new UserInfo(1L, null, "young", "010", "naver.com", 0, "young","1234",null, null);
+        UserInfo userInfo = new UserInfo(1L, null, "young", "010", "naver.com", 0, "young", "1234", null, null);
 
-        MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "number", "cardType", "ownerType",0, null);
+        MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "cardType", "ownerType", 0, null);
         MyWalletInfoDto myWalletInfoDto = myWalletInfoMapper.toDto(myWalletInfo);
 
         assertThat(myWalletInfoDto)
@@ -145,7 +142,7 @@ public class MapperTest {
     @Test
     @DisplayName("MyWalletInfo Mapper DtoToEntity")
     public void MyWalletInfo_Mapper_DtoToEntity() {
-        MyWalletInfoDto myWalletInfoDto = MyWalletInfoDto
+        /*MyWalletInfoDto myWalletInfoDto = MyWalletInfoDto
                 .builder()
                 .cardId("cardId")
                 .cardCompany("NH")
@@ -155,7 +152,8 @@ public class MapperTest {
                 .cardType("3")
                 .ownerType("4")
                 .userInfoId(1L)
-                .build();
+                .build();*/
+        MyWalletInfoDto myWalletInfoDto = new MyWalletInfoDto("cardId","NH","123","2","acCode","cdType","owType",1L);
         MyWalletInfo myWalletInfo = myWalletInfoMapper.toEntity(myWalletInfoDto);
 
         assertThat(myWalletInfoDto)
@@ -170,11 +168,11 @@ public class MapperTest {
     public void TransactionInfo_Mapper_EntityToEntity() {
         WalletReq walletReq = new WalletReq(1L, null, "bbq", "young", "orderId", "orderNum", 1000);
         StoreInfo storeInfo = new StoreInfo(1L, "bbq", "toss", null, null);
-        UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, "young","1234",null, null);
-        MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "number", "cardType", "ownerType", 0,null);
+        UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, "young", "1234", null, null);
+        MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode",  "cardType", "ownerType", 0, null);
 
         TransactionInfo transactionInfo = new TransactionInfo(1L, myWalletInfo, walletReq, storeInfo, userInfo
-                , "tranNum", "2025-03-10T09:23:27+09:00", 1000,1000, "2025-03-10T09:23:27+09:00", "approvalNum",
+                , "tranNum", "2025-03-10T09:23:27+09:00", 1000, 1000, "2025-03-10T09:23:27+09:00", "approvalNum",
                 100, "2025-03-10T09:23:27+09:00", 0, "callBackUrl", "DONE");
 
         TransactionInfoDto transactionInfoDto = transactionMapper.toDto(transactionInfo);
