@@ -49,4 +49,17 @@ public class StoreInfoRepositoryTest{
         assertThat(storeInfo.getMerchantId()).isEqualTo("bbq");
         assertThat(storeInfo.getTossPaymentId()).isEqualTo("toss");
     }
+
+    @Test
+    public void findByMerchantId(){
+        StoreInfo storeInfo = new StoreInfo(
+                null,"bbq","toss",null,null);
+
+        storeInfoRepository.save(storeInfo);
+
+        storeInfo = storeInfoRepository.findByMerchantId("bbq").get();
+        assertThat(storeInfo.getId()).isEqualTo(1L);
+        assertThat(storeInfo.getMerchantId()).isEqualTo("bbq");
+        assertThat(storeInfo.getTossPaymentId()).isEqualTo("toss");
+    }
 }

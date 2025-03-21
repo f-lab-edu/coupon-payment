@@ -7,34 +7,29 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@ToString
+@NoArgsConstructor(force = true) //force = true를 사용하여 final 필드에 null 값 허용
+@Getter
 public class TossBillingRes {
-    private String mId;
-    private String customerKey;
-    private String authenticatedAt;
-    private String method;
-    private String billingKey;
-    private CardInfo card;
-    private String cardCompany;
-    private String cardNumber;
-    private String code;
-    private String message;
-    @Getter
-    @Setter
-    @NoArgsConstructor
+    private final String mId;
+    private final String customerKey;
+    private final String authenticatedAt;
+    private final String method;
+    private final String billingKey;
+    private final CardInfo card;
+    private final String cardCompany;
+    private final String cardNumber;
+    private final String code;
+    private final String message;
+
     @AllArgsConstructor
-    @Builder
-    @ToString
+    @NoArgsConstructor(force = true) //force = true를 사용하여 final 필드에 null 값 허용
+    @Getter
     public static class CardInfo {
-        private String issuerCode;
-        private String acquirerCode;
-        private String number;
-        private String cardType;
-        private String ownerType;
+        private final String issuerCode;
+        private final String acquirerCode;
+        private final String number;
+        private final String cardType;
+        private final String ownerType;
     }
 }

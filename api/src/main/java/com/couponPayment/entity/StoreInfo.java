@@ -26,7 +26,7 @@ public class StoreInfo extends BaseEntity{
     @Column(length = 32)
     private String merchantId;
 
-    /** tossPayment ID*/
+    /** tossPayment ID secret Key*/
     @Column(length = 32)
     private String tossPaymentId;
 

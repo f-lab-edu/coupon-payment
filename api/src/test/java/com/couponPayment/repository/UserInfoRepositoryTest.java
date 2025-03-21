@@ -1,5 +1,6 @@
 package com.couponPayment.repository;
 
+import com.couponPayment.entity.StoreInfo;
 import com.couponPayment.entity.UserInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,9 @@ class UserInfoRepositoryTest {
     private UserInfoRepository userInfoRepository;
 
     @Autowired
+    private StoreInfoRepository storeInfoRepository;
+
+    @Autowired
     private TestEntityManager testEntityManager;
 
     @BeforeEach
@@ -26,7 +30,7 @@ class UserInfoRepositoryTest {
 
     @Test
     public void save() {
-        UserInfo userInfo = new UserInfo(null, null, "young", "010", "naver.com", 0, null, null);
+        UserInfo userInfo = new UserInfo(null, null, "young", "010", "naver.com", 0, "young","1234",null, null);
 
         userInfoRepository.save(userInfo);
 
@@ -34,12 +38,14 @@ class UserInfoRepositoryTest {
         assertThat(userInfo.getName()).isEqualTo("young");
         assertThat(userInfo.getPhone()).isEqualTo("010");
         assertThat(userInfo.getMail()).isEqualTo("naver.com");
+        assertThat(userInfo.getMerchantMemberId()).isEqualTo("young");
+        assertThat(userInfo.getCustomerKey()).isEqualTo("1234");
         assertThat(userInfo.getUseFlag()).isEqualTo(0);
     }
 
     @Test
     public void findById() {
-        UserInfo userInfo = new UserInfo(null, null, "young", "010", "naver.com", 0, null, null);
+        UserInfo userInfo = new UserInfo(null, null, "young", "010", "naver.com", 0, "young","1234",null, null);
         userInfoRepository.save(userInfo);
 
         userInfo = userInfoRepository.findById(1L).get();
@@ -48,7 +54,21 @@ class UserInfoRepositoryTest {
         assertThat(userInfo.getName()).isEqualTo("young");
         assertThat(userInfo.getPhone()).isEqualTo("010");
         assertThat(userInfo.getMail()).isEqualTo("naver.com");
+        assertThat(userInfo.getMerchantMemberId()).isEqualTo("young");
+        assertThat(userInfo.getCustomerKey()).isEqualTo("1234");
         assertThat(userInfo.getUseFlag()).isEqualTo(0);
     }
 
+    @Test
+    public void findByMerchantMemberIdAndStoreInfo_MerchantId(){
+        StoreInfo storeInfo = new StoreInfo(
+                null,"bbq","toss",null,null);
+        storeInfoRepository.save(storeInfo);
+        UserInfo userInfo = new UserInfo(null, storeInfo, "young", "010", "naver.com", 0, "young","1234",null, null);
+        userInfoRepository.save(userInfo);
+
+        userInfo = userInfoRepository.findByMerchantMemberIdAndStoreInfo_MerchantId("young", "bbq").get();
+        assertThat(userInfo.getCustomerKey()).isEqualTo("1234");
+        assertThat(userInfo.getStoreInfo().getTossPaymentId()).isEqualTo("toss");
+    }
 }

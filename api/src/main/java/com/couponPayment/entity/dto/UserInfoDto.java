@@ -6,16 +6,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
-@Setter
-@Builder
+@AllArgsConstructor
+@ToString
 public class UserInfoDto {
-    private String name;
-    private String phone;
-    private String mail;
-    private Integer useFlag;
-    private Long storeInfoId;
+    private final String name;
+    private final String phone;
+    private final String mail;
+    private final Integer useFlag;
+    private final Long storeInfoId;
 }

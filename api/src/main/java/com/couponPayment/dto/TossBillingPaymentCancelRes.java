@@ -1,38 +1,31 @@
 package com.couponPayment.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
-@Setter
+@NoArgsConstructor(force = true) //force = true를 사용하여 final 필드에 null 값 허용
 @Getter
-@ToString(callSuper = true)
 public class TossBillingPaymentCancelRes extends TossBillingPaymentRes{
-    private List<Cancels> cancels;
+    private final List<Cancels> cancels;
 
-    @NoArgsConstructor
     @AllArgsConstructor
-    @ToString
-    @Setter
+    @NoArgsConstructor(force = true) //force = true를 사용하여 final 필드에 null 값 허용
     @Getter
     public static class Cancels {
-        private String transactionKey;
-        private String cancelReason;
-        private int taxExemptionAmount;
-        private String canceledAt;
-        private int transferDiscountAmount;
-        private int easyPayDiscountAmount;
-        private String receiptKey;
-        private String cancelStatus;
-        private String cancelRequestId;
-        private int cancelAmount;
-        private int taxFreeAmount;
-        private int refundableAmount;
+        private final String transactionKey;
+        private final String cancelReason;
+        private final int taxExemptionAmount;
+        private final String canceledAt;
+        private final int transferDiscountAmount;
+        private final int easyPayDiscountAmount;
+        private final String receiptKey;
+        private final String cancelStatus;
+        private final String cancelRequestId;
+        private final int cancelAmount;
+        private final int taxFreeAmount;
+        private final int refundableAmount;
     }
 }

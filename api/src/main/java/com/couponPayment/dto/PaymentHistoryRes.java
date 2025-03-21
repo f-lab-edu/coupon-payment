@@ -5,25 +5,21 @@ import lombok.*;
 
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
-@Setter
+@NoArgsConstructor(force = true) //force = true를 사용하여 final 필드에 null 값 허용
 @Getter
-@Builder
 public class PaymentHistoryRes {
-    private String merchantId;
-    private String merchantMemberId;
-    private List<Payments> payments;
+    private final String merchantId;
+    private final String merchantMemberId;
+    private final List<Payments> payments;
 
-    @NoArgsConstructor
     @AllArgsConstructor
-    @Setter
+    @NoArgsConstructor(force = true) //force = true를 사용하여 final 필드에 null 값 허용
     @Getter
-    @Builder
     public static class Payments{
-        private String orderNum;
-        private int amount;
-        private PaymentStatus paymentStatus;
-        private String approvalDate;
+        private final String orderNum;
+        private final int amount;
+        private final PaymentStatus paymentStatus;
+        private final String approvalDate;
     }
 }

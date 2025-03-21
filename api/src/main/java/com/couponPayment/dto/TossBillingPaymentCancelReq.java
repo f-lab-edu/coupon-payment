@@ -7,13 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor(force = true) //force = true를 사용하여 final 필드에 null 값 허용
 @Getter
-@Setter
-@ToString
 public class TossBillingPaymentCancelReq {
-    private String paymentKey;
-    private String cancelReason;
+    private final String paymentKey;
+    private final String cancelReason;
+    private final String secretKey;
 }

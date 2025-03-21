@@ -1,5 +1,7 @@
 package com.couponPayment.entitiy.mapper;
 
+import com.couponPayment.dto.TossBillingPaymentCancelRes;
+import com.couponPayment.dto.TossBillingPaymentRes;
 import com.couponPayment.entity.MyWalletInfo;
 import com.couponPayment.entity.StoreInfo;
 import com.couponPayment.entity.TransactionInfo;
@@ -18,6 +20,9 @@ import com.couponPayment.entity.mapper.WalletReqMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -77,11 +82,7 @@ public class MapperTest {
     @Test
     @DisplayName("StoreInfo Mapper DtoToEntity")
     public void storeInfo_Mapper_DtoToEntity() {
-        StoreInfoDto storeInfoDto = StoreInfoDto
-                .builder()
-                .merchantId("bbq")
-                .tossPaymentId("toss")
-                .build();
+        StoreInfoDto storeInfoDto = new StoreInfoDto("bbq", "toss");
         StoreInfo storeInfo = storeInfoMapper.toEntity(storeInfoDto);
 
         assertThat(storeInfoDto)
@@ -94,7 +95,7 @@ public class MapperTest {
     public void UserInfo_Mapper_EntityToDto() {
         StoreInfo storeInfo = new StoreInfo(1L, "bbq", "toss", null, null);
 
-        UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, null, null);
+        UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, "young", "1234", null, null);
         UserInfoDto userInfoDto = userInfoMapper.toDto(userInfo);
 
         assertThat(userInfoDto)
@@ -109,14 +110,15 @@ public class MapperTest {
     @Test
     @DisplayName("UserInfo Mapper DtoToEntity")
     public void UserInfo_Mapper_DtoToEntity() {
-        UserInfoDto userInfoDto = UserInfoDto
+        /*UserInfoDto userInfoDto = UserInfoDto
                 .builder()
                 .name("young")
                 .phone("010")
                 .mail("naver.com")
                 .useFlag(0)
                 .storeInfoId(1L)
-                .build();
+                .build();*/
+        UserInfoDto userInfoDto = new UserInfoDto("young", "010", "naver.com",0,1L);
         UserInfo userInfo = userInfoMapper.toEntity(userInfoDto);
 
         assertThat(userInfoDto)
@@ -131,9 +133,9 @@ public class MapperTest {
     @Test
     @DisplayName("MyWalletInfo Mapper EntityToDto")
     public void MyWalletInfo_Mapper_EntityToDto() {
-        UserInfo userInfo = new UserInfo(1L, null, "young", "010", "naver.com", 0, null, null);
+        UserInfo userInfo = new UserInfo(1L, null, "young", "010", "naver.com", 0, "young", "1234", null, null);
 
-        MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "number", "cardType", "ownerType", null);
+        MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "cardType", "ownerType", 0, null);
         MyWalletInfoDto myWalletInfoDto = myWalletInfoMapper.toDto(myWalletInfo);
 
         assertThat(myWalletInfoDto)
@@ -145,7 +147,7 @@ public class MapperTest {
     @Test
     @DisplayName("MyWalletInfo Mapper DtoToEntity")
     public void MyWalletInfo_Mapper_DtoToEntity() {
-        MyWalletInfoDto myWalletInfoDto = MyWalletInfoDto
+        /*MyWalletInfoDto myWalletInfoDto = MyWalletInfoDto
                 .builder()
                 .cardId("cardId")
                 .cardCompany("NH")
@@ -155,7 +157,8 @@ public class MapperTest {
                 .cardType("3")
                 .ownerType("4")
                 .userInfoId(1L)
-                .build();
+                .build();*/
+        MyWalletInfoDto myWalletInfoDto = new MyWalletInfoDto("cardId","NH","123","2","acCode","cdType","owType",1L);
         MyWalletInfo myWalletInfo = myWalletInfoMapper.toEntity(myWalletInfoDto);
 
         assertThat(myWalletInfoDto)
@@ -170,12 +173,12 @@ public class MapperTest {
     public void TransactionInfo_Mapper_EntityToEntity() {
         WalletReq walletReq = new WalletReq(1L, null, "bbq", "young", "orderId", "orderNum", 1000);
         StoreInfo storeInfo = new StoreInfo(1L, "bbq", "toss", null, null);
-        UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, null, null);
-        MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode", "number", "cardType", "ownerType", null);
+        UserInfo userInfo = new UserInfo(1L, storeInfo, "young", "010", "naver.com", 0, "young", "1234", null, null);
+        MyWalletInfo myWalletInfo = new MyWalletInfo(1L, userInfo, "cardId", "cardCompany", "cardNumber", "issuerCode", "acquirerCode",  "cardType", "ownerType", 0, null);
 
         TransactionInfo transactionInfo = new TransactionInfo(1L, myWalletInfo, walletReq, storeInfo, userInfo
-                , "tranNum", "2025-03-10T09:23:27+09:00", 1000, "2025-03-10T09:23:27+09:00", "approvalNum",
-                100, "2025-03-10T09:23:27+09:00", 0, "callBackUrl");
+                , "tranNum", "2025-03-10T09:23:27+09:00", 1000, 1000, "2025-03-10T09:23:27+09:00", "approvalNum",
+                100, "2025-03-10T09:23:27+09:00", 0, "callBackUrl", "DONE");
 
         TransactionInfoDto transactionInfoDto = transactionMapper.toDto(transactionInfo);
 
@@ -198,6 +201,7 @@ public class MapperTest {
                 .builder()
                 .tranNum("tranNum")
                 .requestDt("2025-03-10T09:23:27+09:00")
+                .amount(1000)
                 .approvalAmount(1000)
                 .approvalDt("2025-03-10T09:23:27+09:00")
                 .approvalNum("approvalNum")
@@ -209,6 +213,7 @@ public class MapperTest {
                 .userInfoId(1L)
                 .storeInfoId(1L)
                 .walletReqId(1L)
+                .status("DONE")
                 .build();
 
         TransactionInfo transactionInfo = transactionMapper.toEntity(transactionInfoDto);
@@ -222,4 +227,119 @@ public class MapperTest {
         assertThat(transactionInfo.getStoreInfo().getId()).isEqualTo(1L);
         assertThat(transactionInfo.getWalletReq().getId()).isEqualTo(1L);
     }
+
+    @Test
+    @DisplayName("TransactionInfo Mapper toTransactionInfoApproval")
+    public void TransactionInfo_Mapper_toTransactionInfoApproval() {
+        TransactionInfo transactionInfo = new TransactionInfo(1L, null, null, null, null
+                , "tranNum", "2025-03-10T09:23:27+09:00", 1000, 1000, "2025-03-10T09:23:27+09:00", "approvalNum",
+                100, "2025-03-10T09:23:27+09:00", 0, "callBackUrl", "DONE");
+
+        TossBillingPaymentRes.Card card = new TossBillingPaymentRes.Card("company", "issueCd", "acCd", "number", 0, false, "payer", "apNo", false, "cdType"
+                , "ownerType", "acStatus", "reUrl", "provider", 1000);
+
+        TossBillingPaymentRes tossBillingPaymentRes = new TossBillingPaymentRes(
+                "MID123456",
+                "LTK123456",
+                "PK123456",
+                "ORDER123456",
+                "Test Order",
+                0,
+                "DONE",
+                "2025-03-20T12:00:00",
+                "2025-03-20T12:05:00",
+                false,
+                false,
+                "CARD",
+                "KR",
+                true,
+                "TK123456",
+                "KRW",
+                100000,
+                50000,
+                90000,
+                10000,
+                0,
+                "CreditCard",
+                "1.0",
+                new TossBillingPaymentRes.Receipt("https://test-receipt.com"),
+                new TossBillingPaymentRes.Checkout("https://test-checkout.com"),
+                card,
+                new TossBillingPaymentRes.Failure("ERROR123", "Transaction Failed"),
+                "200",
+                "Success"
+        );
+
+        transactionMapper.toTransactionInfoApproval(tossBillingPaymentRes, transactionInfo);
+        assertThat(tossBillingPaymentRes.getPaymentKey()).isEqualTo(transactionInfo.getTranNum());
+        assertThat(tossBillingPaymentRes.getTotalAmount()).isEqualTo(transactionInfo.getApprovalAmount());
+        assertThat(tossBillingPaymentRes.getApprovedAt()).isEqualTo(transactionInfo.getApprovalDt());
+        assertThat(tossBillingPaymentRes.getCard().getApproveNo()).isEqualTo(transactionInfo.getApprovalNum());
+        assertThat(tossBillingPaymentRes.getCard().getInstallmentPlanMonths()).isEqualTo(transactionInfo.getInstallment());
+        assertThat(tossBillingPaymentRes.getStatus()).isEqualTo(transactionInfo.getStatus());
+    }
+
+    @Test
+    @DisplayName("TransactionInfo Mapper toTransactionInfoCancel")
+    public void TransactionInfo_Mapper_toTransactionInfoCancel() {
+        TransactionInfo transactionInfo = new TransactionInfo(1L, null, null, null, null
+                , "tranNum", "2025-03-10T09:23:27+09:00", 1000, 1000, "2025-03-10T09:23:27+09:00", "approvalNum",
+                100, "2025-03-10T09:23:27+09:00", 0, "callBackUrl", "DONE");
+
+        TossBillingPaymentRes.Card card = new TossBillingPaymentRes.Card("company", "issueCd", "acCd", "number", 0, false, "payer", "apNo", false, "cdType"
+                , "ownerType", "acStatus", "reUrl", "provider", 1000);
+
+        TossBillingPaymentRes tossBillingPaymentRes = new TossBillingPaymentRes(
+                "MID123456",
+                "LTK123456",
+                "PK123456",
+                "ORDER123456",
+                "Test Order",
+                0,
+                "DONE",
+                "2025-03-20T12:00:00",
+                "2025-03-20T12:05:00",
+                false,
+                false,
+                "CARD",
+                "KR",
+                true,
+                "TK123456",
+                "KRW",
+                100000,
+                50000,
+                90000,
+                10000,
+                0,
+                "CreditCard",
+                "1.0",
+                new TossBillingPaymentRes.Receipt("https://test-receipt.com"),
+                new TossBillingPaymentRes.Checkout("https://test-checkout.com"),
+                card,
+                new TossBillingPaymentRes.Failure("ERROR123", "Transaction Failed"),
+                "200",
+                "Success"
+        );
+
+        TossBillingPaymentCancelRes.Cancels cancel = new TossBillingPaymentCancelRes.Cancels(
+                "TK123456",
+                "Customer Request",
+                0,
+                "2024-02-13T12:20:23+09:00",
+                500,
+                200,
+                "RECEIPT123",
+                "DONE",
+                "REQ123456",
+                1000,
+                0,
+                800
+        );
+
+        transactionMapper.toTransactionInfoCancel(cancel, transactionInfo);
+        assertThat(cancel.getCanceledAt()).isEqualTo(transactionInfo.getCancelDt());
+        assertThat(cancel.getCancelAmount()).isEqualTo(transactionInfo.getCancelAmount());
+        assertThat(cancel.getCancelStatus()).isEqualTo(transactionInfo.getStatus());
+    }
+
 }

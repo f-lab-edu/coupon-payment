@@ -10,10 +10,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
 @Entity
+@Setter
 public class TransactionInfo extends BaseEntity{
     @Id
     @Column(name = "transactionInfoId")
@@ -48,7 +50,7 @@ public class TransactionInfo extends BaseEntity{
     private String tranNum;
 
     private String requestDt;
-    //private Integer amount;
+    private Integer amount;
 
     private Integer approvalAmount;
     private String approvalDt;
@@ -63,7 +65,28 @@ public class TransactionInfo extends BaseEntity{
     @Column(length = 128)
     private String callbackUrl;
 
+    //결제 상태
+    private String status;
     protected TransactionInfo() {
 
     }
+
+    /*public void approvalPayment(TossBillingPaymentRes tossBillingPaymentRes){
+        this.tranNum = tossBillingPaymentRes.getPaymentKey();
+        this.approvalAmount = tossBillingPaymentRes.getTotalAmount();
+        this.approvalDt = tossBillingPaymentRes.getApprovedAt();
+        this.approvalNum = tossBillingPaymentRes.getCard().getApproveNo();
+        this.installment = tossBillingPaymentRes.getCard().getInstallmentPlanMonths();
+        this.status = tossBillingPaymentRes.getStatus();
+    }
+
+    public void cancelPayment(TossBillingPaymentCancelRes tossBillingPaymentCancelRes){
+        this.cancelAmount = tossBillingPaymentCancelRes.getCancels().get(0).getCancelAmount();
+        this.cancelDt = tossBillingPaymentCancelRes.getCancels().get(0).getCanceledAt();
+        this.status = tossBillingPaymentCancelRes.getCancels().get(0).getCancelStatus();
+    }
+
+    public void cancelFail(){
+        this.status = PaymentStatus.FAIL.name();
+    }*/
 }

@@ -7,14 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
-@Setter
-@Builder
+@AllArgsConstructor
 @ToString
 public class StoreInfoDto {
-    private String merchantId;
-    private String tossPaymentId;
+    private final String merchantId;
+    private final String tossPaymentId;
 
 }

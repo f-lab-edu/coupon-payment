@@ -26,7 +26,7 @@ public class TossController {
         model.addAttribute("clientKey", clientKey);
         model.addAttribute("successUrl", "http://localhost:8081/api/v1/toss/billing/success");
         model.addAttribute("failUrl", "http://localhost:8081/api/v1/toss/billing/fail");
-        model.addAttribute("customerKey", customerKey);
+        model.addAttribute("customerKey", "merchantMemeberId");
         return "toss";
     }
 
