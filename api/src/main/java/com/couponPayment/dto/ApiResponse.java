@@ -15,7 +15,7 @@ public class ApiResponse<T> {
     private final T data;
 
     private ApiResponse() {
-        this(CommonResult.E0000);
+        this(CommonResult.E0000.getCode(), CommonResult.E0000.getMessage(), null);
     }
 
     private ApiResponse(CommonResult commonResult) {
@@ -32,11 +32,15 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
-    public static ApiResponse fail(CommonResult commonResult) {
+    public static final ApiResponse fail(CommonResult commonResult) {
         return new ApiResponse(commonResult);
     }
 
     public static <T> ApiResponse<T> of(CommonResult commonResult, T data) {
-        return new ApiResponse<>(commonResult.getCode(), commonResult.getMessage(), data);
+        return new ApiResponse<>(commonResult, data);
+    }
+
+    public static <T> ApiResponse<T> of(String resultCode,String resultMsg, T data) {
+        return new ApiResponse<>(resultCode, resultMsg, data);
     }
 }
