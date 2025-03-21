@@ -11,7 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class StoreInfoDto {
-    private String merchantId;
-    private String tossPaymentId;
+    private final String merchantId;
+    private final String tossPaymentId;
 
 }

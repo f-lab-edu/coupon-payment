@@ -45,6 +45,7 @@ class PaymentControllerTest {
                 .installment(0)
                 .amount(1000)
                 .build();*/
+
         // given
         PaymentReq paymentReq = new PaymentReq("가맹점", "young", "12345", "orderId", "cardId", 0, 1000);
 
@@ -83,6 +84,7 @@ class PaymentControllerTest {
                 .merchantMemberId("young")
                 .tranNum("txn_12345")
                 .build();*/
+
         PaymentCancelReq paymentCancelReq = new PaymentCancelReq("가맹점", "young", "txn_12345");
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(paymentCancelReq);

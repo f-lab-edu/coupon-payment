@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -162,12 +163,7 @@ public class PaymentServiceTest {
 
         //결제 성공
         if (tossBillingPaymentRes.getStatus().equals(PaymentStatus.DONE.name())) {
-            transactionInfo.setTranNum(tossBillingPaymentRes.getPaymentKey());
-            transactionInfo.setApprovalAmount(tossBillingPaymentRes.getTotalAmount());
-            transactionInfo.setApprovalDt(tossBillingPaymentRes.getApprovedAt());
-            transactionInfo.setApprovalNum(tossBillingPaymentRes.getCard().getApproveNo());
-            transactionInfo.setInstallment(tossBillingPaymentRes.getCard().getInstallmentPlanMonths());
-            transactionInfo.setStatus(tossBillingPaymentRes.getStatus());
+            transactionMapper.toTransactionInfoApproval(tossBillingPaymentRes, transactionInfo);
         }
 
         /*PaymentRes paymentRes = PaymentRes
@@ -197,6 +193,13 @@ public class PaymentServiceTest {
                 tossBillingPaymentRes.getPaymentKey()
                 );
         ApiResponse.of(CommonResult.E0000, paymentRes);
+
+        assertThat(tossBillingPaymentRes.getPaymentKey()).isEqualTo(transactionInfo.getTranNum());
+        assertThat(tossBillingPaymentRes.getTotalAmount()).isEqualTo(transactionInfo.getApprovalAmount());
+        assertThat(tossBillingPaymentRes.getApprovedAt()).isEqualTo(transactionInfo.getApprovalDt());
+        assertThat(tossBillingPaymentRes.getCard().getApproveNo()).isEqualTo(transactionInfo.getApprovalNum());
+        assertThat(tossBillingPaymentRes.getCard().getInstallmentPlanMonths()).isEqualTo(transactionInfo.getInstallment());
+        assertThat(tossBillingPaymentRes.getStatus()).isEqualTo(transactionInfo.getStatus());
         System.out.println(ApiResponse.of(CommonResult.E0000, paymentRes));
     }
 
@@ -300,10 +303,12 @@ public class PaymentServiceTest {
 
         //분할 취소를 위해 list로 있지만 내 서비스에 분할 취소는 없다
         if (tossBillingPaymentCancelRes.getCancels().get(0).getCancelStatus().equals(PaymentStatus.DONE.name())) {
-            cancelTransactionInfo.setCancelAmount(tossBillingPaymentCancelRes.getCancels().get(0).getCancelAmount());
-            cancelTransactionInfo.setCancelDt(tossBillingPaymentCancelRes.getCancels().get(0).getCanceledAt());
-            cancelTransactionInfo.setStatus(tossBillingPaymentCancelRes.getCancels().get(0).getCancelStatus());
+            transactionMapper.toTransactionInfoCancel(tossBillingPaymentCancelRes.getCancels().get(0), cancelTransactionInfo);
         }
+
+        assertThat(cancel.getCanceledAt()).isEqualTo(cancelTransactionInfo.getCancelDt());
+        assertThat(cancel.getCancelAmount()).isEqualTo(cancelTransactionInfo.getCancelAmount());
+        assertThat(cancel.getCancelStatus()).isEqualTo(cancelTransactionInfo.getStatus());
 
         /*PaymentCancelRes paymentCancelRes = PaymentCancelRes
                 .builder()

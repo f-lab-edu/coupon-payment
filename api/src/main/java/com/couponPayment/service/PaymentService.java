@@ -73,12 +73,7 @@ public class PaymentService {
                 tossBillingService.billingPayment(tossBillingPaymentReq);
 
         if (tossBillingPaymentRes.getStatus().equals(PaymentStatus.DONE.name())) {
-            transactionInfo.setTranNum(tossBillingPaymentRes.getPaymentKey());
-            transactionInfo.setApprovalAmount(tossBillingPaymentRes.getTotalAmount());
-            transactionInfo.setApprovalDt(tossBillingPaymentRes.getApprovedAt());
-            transactionInfo.setApprovalNum(tossBillingPaymentRes.getCard().getApproveNo());
-            transactionInfo.setInstallment(tossBillingPaymentRes.getCard().getInstallmentPlanMonths());
-            transactionInfo.setStatus(tossBillingPaymentRes.getStatus());
+            transactionMapper.toTransactionInfoApproval(tossBillingPaymentRes, transactionInfo);
         }
 
         PaymentRes paymentRes = new PaymentRes(
@@ -96,6 +91,7 @@ public class PaymentService {
         return ApiResponse.of(CommonResult.E0000, paymentRes);
     }
 
+    @Transactional
     public ApiResponse<PaymentCancelRes> paymentCancel(PaymentCancelReq paymentCancelReq) {
         TransactionInfo transactionInfo = transactionInfoRepository.findByTranNumAndStatus(paymentCancelReq.getTranNum(),"DONE").get();
         StoreInfo storeInfo = transactionInfo.getStoreInfo();
@@ -131,10 +127,7 @@ public class PaymentService {
 
         //분할 취소를 위해 list로 있지만 내 서비스에 분할 취소는 없다
         if(tossBillingPaymentCancelRes.getCancels().get(0).getCancelStatus().equals(PaymentStatus.DONE.name())){
-            //cancelTransactionInfo.cancelPayment(tossBillingPaymentCancelRes);
-            cancelTransactionInfo.setCancelAmount(tossBillingPaymentCancelRes.getCancels().get(0).getCancelAmount());
-            cancelTransactionInfo.setCancelDt(tossBillingPaymentCancelRes.getCancels().get(0).getCanceledAt());
-            cancelTransactionInfo.setStatus(tossBillingPaymentCancelRes.getCancels().get(0).getCancelStatus());
+            transactionMapper.toTransactionInfoCancel(tossBillingPaymentCancelRes.getCancels().get(0), cancelTransactionInfo);
         }
 
         PaymentCancelRes paymentCancelRes = new PaymentCancelRes(

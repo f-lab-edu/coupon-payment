@@ -1,5 +1,7 @@
 package com.couponPayment.entitiy.mapper;
 
+import com.couponPayment.dto.TossBillingPaymentCancelRes;
+import com.couponPayment.dto.TossBillingPaymentRes;
 import com.couponPayment.entity.MyWalletInfo;
 import com.couponPayment.entity.StoreInfo;
 import com.couponPayment.entity.TransactionInfo;
@@ -18,6 +20,9 @@ import com.couponPayment.entity.mapper.WalletReqMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -222,4 +227,119 @@ public class MapperTest {
         assertThat(transactionInfo.getStoreInfo().getId()).isEqualTo(1L);
         assertThat(transactionInfo.getWalletReq().getId()).isEqualTo(1L);
     }
+
+    @Test
+    @DisplayName("TransactionInfo Mapper toTransactionInfoApproval")
+    public void TransactionInfo_Mapper_toTransactionInfoApproval() {
+        TransactionInfo transactionInfo = new TransactionInfo(1L, null, null, null, null
+                , "tranNum", "2025-03-10T09:23:27+09:00", 1000, 1000, "2025-03-10T09:23:27+09:00", "approvalNum",
+                100, "2025-03-10T09:23:27+09:00", 0, "callBackUrl", "DONE");
+
+        TossBillingPaymentRes.Card card = new TossBillingPaymentRes.Card("company", "issueCd", "acCd", "number", 0, false, "payer", "apNo", false, "cdType"
+                , "ownerType", "acStatus", "reUrl", "provider", 1000);
+
+        TossBillingPaymentRes tossBillingPaymentRes = new TossBillingPaymentRes(
+                "MID123456",
+                "LTK123456",
+                "PK123456",
+                "ORDER123456",
+                "Test Order",
+                0,
+                "DONE",
+                "2025-03-20T12:00:00",
+                "2025-03-20T12:05:00",
+                false,
+                false,
+                "CARD",
+                "KR",
+                true,
+                "TK123456",
+                "KRW",
+                100000,
+                50000,
+                90000,
+                10000,
+                0,
+                "CreditCard",
+                "1.0",
+                new TossBillingPaymentRes.Receipt("https://test-receipt.com"),
+                new TossBillingPaymentRes.Checkout("https://test-checkout.com"),
+                card,
+                new TossBillingPaymentRes.Failure("ERROR123", "Transaction Failed"),
+                "200",
+                "Success"
+        );
+
+        transactionMapper.toTransactionInfoApproval(tossBillingPaymentRes, transactionInfo);
+        assertThat(tossBillingPaymentRes.getPaymentKey()).isEqualTo(transactionInfo.getTranNum());
+        assertThat(tossBillingPaymentRes.getTotalAmount()).isEqualTo(transactionInfo.getApprovalAmount());
+        assertThat(tossBillingPaymentRes.getApprovedAt()).isEqualTo(transactionInfo.getApprovalDt());
+        assertThat(tossBillingPaymentRes.getCard().getApproveNo()).isEqualTo(transactionInfo.getApprovalNum());
+        assertThat(tossBillingPaymentRes.getCard().getInstallmentPlanMonths()).isEqualTo(transactionInfo.getInstallment());
+        assertThat(tossBillingPaymentRes.getStatus()).isEqualTo(transactionInfo.getStatus());
+    }
+
+    @Test
+    @DisplayName("TransactionInfo Mapper toTransactionInfoCancel")
+    public void TransactionInfo_Mapper_toTransactionInfoCancel() {
+        TransactionInfo transactionInfo = new TransactionInfo(1L, null, null, null, null
+                , "tranNum", "2025-03-10T09:23:27+09:00", 1000, 1000, "2025-03-10T09:23:27+09:00", "approvalNum",
+                100, "2025-03-10T09:23:27+09:00", 0, "callBackUrl", "DONE");
+
+        TossBillingPaymentRes.Card card = new TossBillingPaymentRes.Card("company", "issueCd", "acCd", "number", 0, false, "payer", "apNo", false, "cdType"
+                , "ownerType", "acStatus", "reUrl", "provider", 1000);
+
+        TossBillingPaymentRes tossBillingPaymentRes = new TossBillingPaymentRes(
+                "MID123456",
+                "LTK123456",
+                "PK123456",
+                "ORDER123456",
+                "Test Order",
+                0,
+                "DONE",
+                "2025-03-20T12:00:00",
+                "2025-03-20T12:05:00",
+                false,
+                false,
+                "CARD",
+                "KR",
+                true,
+                "TK123456",
+                "KRW",
+                100000,
+                50000,
+                90000,
+                10000,
+                0,
+                "CreditCard",
+                "1.0",
+                new TossBillingPaymentRes.Receipt("https://test-receipt.com"),
+                new TossBillingPaymentRes.Checkout("https://test-checkout.com"),
+                card,
+                new TossBillingPaymentRes.Failure("ERROR123", "Transaction Failed"),
+                "200",
+                "Success"
+        );
+
+        TossBillingPaymentCancelRes.Cancels cancel = new TossBillingPaymentCancelRes.Cancels(
+                "TK123456",
+                "Customer Request",
+                0,
+                "2024-02-13T12:20:23+09:00",
+                500,
+                200,
+                "RECEIPT123",
+                "DONE",
+                "REQ123456",
+                1000,
+                0,
+                800
+        );
+
+        transactionMapper.toTransactionInfoCancel(cancel, transactionInfo);
+        assertThat(cancel.getCanceledAt()).isEqualTo(transactionInfo.getCancelDt());
+        assertThat(cancel.getCancelAmount()).isEqualTo(transactionInfo.getCancelAmount());
+        assertThat(cancel.getCancelStatus()).isEqualTo(transactionInfo.getStatus());
+    }
+
 }

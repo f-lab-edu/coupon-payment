@@ -9,6 +9,8 @@ import com.couponPayment.dto.PaymentHistoryReq;
 import com.couponPayment.dto.PaymentHistoryRes;
 import com.couponPayment.dto.PaymentReq;
 import com.couponPayment.dto.PaymentRes;
+import com.couponPayment.service.PaymentService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +24,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/payment")
+@RequiredArgsConstructor
 public class PaymentController {
     private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
+    private final PaymentService paymentService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<PaymentRes>> payment(@RequestBody PaymentReq paymentReq){
+    public ResponseEntity<ApiResponse<PaymentRes>> payment(@RequestBody PaymentReq paymentReq) {
 
         /*PaymentRes paymentRes = PaymentRes.builder()
                 .merchantId("가맹점")
@@ -41,13 +45,13 @@ public class PaymentController {
                 .resultCode("0000")
                 .resultMessage("성공")
                 .build();*/
-        PaymentRes paymentRes = new PaymentRes("가맹점","young","12345","NH","123",1000,"aNum","adt","tran");
-        ApiResponse<PaymentRes> apiResponse =  ApiResponse.of(CommonResult.E0000, paymentRes);
+        //PaymentRes paymentRes = new PaymentRes("가맹점","young","12345","NH","123",1000,"aNum","adt","tran");
+        ApiResponse<PaymentRes> apiResponse = paymentService.payment(paymentReq);
         return ResponseEntity.ok(apiResponse);
     }
 
     @PostMapping("/cancel")
-    public ResponseEntity<ApiResponse<PaymentCancelRes>> paymentCancel(@RequestBody PaymentCancelReq paymentCancelReq){
+    public ResponseEntity<ApiResponse<PaymentCancelRes>> paymentCancel(@RequestBody PaymentCancelReq paymentCancelReq) {
         /*PaymentCancelRes paymentCancelRes = PaymentCancelRes
                 .builder()
                 .merchantId("가맹점")
@@ -59,13 +63,13 @@ public class PaymentController {
                 .resultMessage("성공")
                 .build();*/
         logger.info(paymentCancelReq.toString());
-        PaymentCancelRes paymentCancelRes = new PaymentCancelRes("가맹점","young","12345","orderNum",1000,"20250321");
-        ApiResponse<PaymentCancelRes> apiResponse =  ApiResponse.of(CommonResult.E0000, paymentCancelRes);
+        //PaymentCancelRes paymentCancelRes = new PaymentCancelRes("가맹점","young","12345","orderNum",1000,"20250321");
+        ApiResponse<PaymentCancelRes> apiResponse = paymentService.paymentCancel(paymentCancelReq);
         return ResponseEntity.ok(apiResponse);
     }
 
     @PostMapping("/history")
-    public ResponseEntity<ApiResponse<PaymentHistoryRes>> paymentHistory(@RequestBody PaymentHistoryReq paymentHistoryReq){
+    public ResponseEntity<ApiResponse<PaymentHistoryRes>> paymentHistory(@RequestBody PaymentHistoryReq paymentHistoryReq) {
         /*List<PaymentHistoryRes.Payments> payments = new ArrayList<>();
         PaymentHistoryRes.Payments payments1 = PaymentHistoryRes.Payments
                 .builder()
@@ -93,14 +97,14 @@ public class PaymentController {
                 .build();*/
 
         List<PaymentHistoryRes.Payments> payments = new ArrayList<>();
-        PaymentHistoryRes.Payments payments1 = new PaymentHistoryRes.Payments("12345",1000,PaymentStatus.DONE, "20250302112233");
-        PaymentHistoryRes.Payments payments2 = new PaymentHistoryRes.Payments("123456",500,PaymentStatus.CANCEL, "20250302112244");
+        PaymentHistoryRes.Payments payments1 = new PaymentHistoryRes.Payments("12345", 1000, PaymentStatus.DONE, "20250302112233");
+        PaymentHistoryRes.Payments payments2 = new PaymentHistoryRes.Payments("123456", 500, PaymentStatus.CANCEL, "20250302112244");
 
         payments.add(payments1);
         payments.add(payments2);
 
         PaymentHistoryRes paymentHistoryRes = new PaymentHistoryRes("가맹점", "young", payments);
-        ApiResponse<PaymentHistoryRes> apiResponse =  ApiResponse.of(CommonResult.E0000, paymentHistoryRes);
+        ApiResponse<PaymentHistoryRes> apiResponse = ApiResponse.of(CommonResult.E0000, paymentHistoryRes);
         return ResponseEntity.ok(apiResponse);
     }
 }

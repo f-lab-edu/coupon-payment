@@ -14,6 +14,8 @@ public class TossBillingService{
     private final ApiService<TossBillingPaymentRes> billingResApiService;
     private final ApiService<TossBillingPaymentCancelRes> billingPaymentCancelResApiService;
     private final ApiService<TossBillingRes> getBillingResApiService;
+    private final TossCommonHeaderUtil tossCommonHeaderUtil;
+
     @Value("${toss.paymentUrl}")
     private String paymentUrl;
 
@@ -25,7 +27,7 @@ public class TossBillingService{
 
     public TossBillingRes getBillingKey(TossBillingReq tossBillingReq) {
 
-        HttpHeaders headers = TossCommonHeaderUtil.tossHeader(tossBillingReq.getSecretKey());
+        HttpHeaders headers = tossCommonHeaderUtil.tossHeader(tossBillingReq.getSecretKey());
         TossBillingRes tossBillingRes = getBillingResApiService.post(billingKeyUrl, headers, TossBillingRes.class).getBody();
 
         return tossBillingRes;
@@ -34,7 +36,7 @@ public class TossBillingService{
     public TossBillingPaymentRes billingPayment(TossBillingPaymentReq tossBillingPaymentReq) {
         String url = paymentUrl + tossBillingPaymentReq.getCardId();
 
-        HttpHeaders headers = TossCommonHeaderUtil.tossHeader(tossBillingPaymentReq.getSecretKey());
+        HttpHeaders headers = tossCommonHeaderUtil.tossHeader(tossBillingPaymentReq.getSecretKey());
         /** Todo
          * 서비스 -> 외부 API(토스)
          * 성공 실패, 에러에 따른 핸들링 필요
@@ -47,7 +49,7 @@ public class TossBillingService{
     public TossBillingPaymentCancelRes billingPaymentCancel(TossBillingPaymentCancelReq tossBillingPaymentCancelReq) {
         String url = paymentCancelUrl.replace("{paymentKey}", tossBillingPaymentCancelReq.getPaymentKey());
 
-        HttpHeaders headers = TossCommonHeaderUtil.tossHeader(tossBillingPaymentCancelReq.getSecretKey());
+        HttpHeaders headers = tossCommonHeaderUtil.tossHeader(tossBillingPaymentCancelReq.getSecretKey());
         /** Todo
          * 서비스 -> 외부 API(토스)
          * 성공 실패, 에러에 따른 핸들링 필요

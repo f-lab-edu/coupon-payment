@@ -2,12 +2,14 @@ package com.couponPayment.util;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 
 import java.util.Base64;
 
+@Component
 public class TossCommonHeaderUtil {
 
-    public static HttpHeaders tossHeader(String tossSecretKey) {
+    public HttpHeaders tossHeader(String tossSecretKey) {
 
         String secretKey = tossSecretKey;
         String authHeader = "Basic " + Base64.getEncoder().encodeToString((secretKey + ":").getBytes());
