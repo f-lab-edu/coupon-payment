@@ -36,9 +36,7 @@ public class Order extends BaseEntity{
     @JoinColumn(name = "userInfoId")
     private UserInfo userInfo;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "couponIssueId")
-    private CouponIssue couponIssue;
+
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
     private List<OrderItem> items = new ArrayList<>();

@@ -27,7 +27,7 @@ public class CouponIssue extends BaseEntity{
     private Coupon coupon;
 
     @OneToOne(mappedBy = "couponIssue")
-    private Order order; // 쿠폰 사용 시 연결된 주문
+    private OrderItem orderItem; // 쿠폰 사용 시 연결된 주문
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userInfoId")
